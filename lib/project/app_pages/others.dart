@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:in_app_review/in_app_review.dart';
+// import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import 'package:money_assistant_2608/project/app_pages/select_date_format.dart';
 import 'package:money_assistant_2608/project/app_pages/select_language.dart';
@@ -215,14 +215,15 @@ class _SettingsState extends State<Settings> {
               else if (int == 6) {
                 Share.share(
                     'https://apps.apple.com/us/app/mmas-money-tracker-bookkeeper/id1582638369');
-              } else {
-                final InAppReview inAppReview = InAppReview.instance;
-                await inAppReview.openStoreListing(
-                  appStoreId: Platform.isIOS
-                      ? '1582638369'
-                      : 'com.mmas.money_assistant_2608',
-                );
               }
+              // else {
+              //   final InAppReview inAppReview = InAppReview.instance;
+              //   await inAppReview.openStoreListing(
+              //     appStoreId: Platform.isIOS
+              //         ? '1582638369'
+              //         : 'com.mmas.money_assistant_2608',
+              //   );
+              // }
             },
             child: Column(
               children: [
