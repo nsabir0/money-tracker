@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/localization/language.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
 import 'package:provider/provider.dart';
 
+import '../classes/constants.dart';
+import '../localization/language.dart';
+import '../localization/methods.dart';
 import '../provider.dart';
 
 class Currency extends StatelessWidget {
+  const Currency({super.key});
+
   @override
   Widget build(BuildContext context) {
     List<Language> languageList = Language.languageList;
@@ -33,12 +35,12 @@ class Currency extends StatelessWidget {
           create: (context) => OnCurrencySelected(),
           builder: (context, widget) => ListView.builder(
               itemCount: languageList.length,
-              itemBuilder: (context, int) {
+              itemBuilder: (context, int index) {
                 return GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     context.read<OnCurrencySelected>().onCurrencySelected(
-                        '${languageList[int].languageCode}_${languageList[int].countryCode}');
+                        '${languageList[index].languageCode}_${languageList[index].countryCode}');
                   },
                   child: Column(
                     children: [
@@ -48,7 +50,7 @@ class Currency extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              Language.languageList[int].flag,
+                              Language.languageList[index].flag,
                               style: TextStyle(fontSize: 45.sp),
                             ),
                             SizedBox(width: 30.w),
@@ -56,22 +58,22 @@ class Currency extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(Language.languageList[int].currencyName,
+                                Text(Language.languageList[index].currencyName,
                                     style: TextStyle(fontSize: 20.sp)),
                                 SizedBox(height: 2.5.h),
-                                Text(Language.languageList[int].currencyCode,
+                                Text(Language.languageList[index].currencyCode,
                                     style: TextStyle(fontSize: 15.sp))
                               ],
                             ),
-                            Spacer(),
+                            const Spacer(),
                             context.watch<OnCurrencySelected>().appCurrency ==
-                                    '${languageList[int].languageCode}_${languageList[int].countryCode}'
+                                    '${languageList[index].languageCode}_${languageList[index].countryCode}'
                                 ? Icon(Icons.check_circle,
                                     size: 25.sp, color: blue3)
-                                : SizedBox(),
+                                : const SizedBox(),
                             SizedBox(width: 25.w),
                             Text(
-                              Language.languageList[int].currencySymbol,
+                              Language.languageList[index].currencySymbol,
                               style: TextStyle(fontSize: 23.sp),
                             ),
                             SizedBox(width: 15.w)

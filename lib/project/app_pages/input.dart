@@ -1,28 +1,26 @@
 import 'dart:core';
-import 'dart:io' show Platform;
+import 'dart:io';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
-import 'package:money_assistant_2608/project/classes/alert_dialog.dart';
-import 'package:money_assistant_2608/project/classes/app_bar.dart';
-import 'package:money_assistant_2608/project/classes/category_item.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/classes/custom_toast.dart';
-import 'package:money_assistant_2608/project/classes/input_model.dart';
-import 'package:money_assistant_2608/project/classes/keyboard.dart';
-import 'package:money_assistant_2608/project/classes/saveOrSaveAndDeleteButtons.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/database_management/sqflite_services.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+import '../classes/alert_dialog.dart';
+import '../classes/app_bar.dart';
+import '../classes/category_item.dart';
+import '../classes/constants.dart';
+import '../classes/custom_toast.dart';
+import '../classes/input_model.dart';
+import '../classes/keyboard.dart';
+import '../classes/save_or_save_and_delete_buttons.dart';
+import '../database_management/shared_preferences_services.dart';
+import '../database_management/sqflite_services.dart';
+import '../localization/methods.dart';
 import '../provider.dart';
 import 'expense_category.dart';
 import 'income_category.dart';
@@ -36,11 +34,13 @@ late TextEditingController _amountController;
 FocusNode? amountFocusNode, descriptionFocusNode;
 
 class AddInput extends StatefulWidget {
+  const AddInput({super.key});
+
   @override
-  _AddInputState createState() => _AddInputState();
+  AddInputState createState() => AddInputState();
 }
 
-class _AddInputState extends State<AddInput> {
+class AddInputState extends State<AddInput> {
   static final _formKey1 = GlobalKey<FormState>(debugLabel: '_formKey1'),
       _formKey2 = GlobalKey<FormState>(debugLabel: '_formKey2');
 
@@ -61,7 +61,7 @@ class _AddInputState extends State<AddInput> {
           length: 2,
           child: Scaffold(
               backgroundColor: blue1,
-              appBar: InExAppBar(true),
+              appBar: const InExAppBar(true),
               body:
                   // ChangeNotifierProvider<ChangeModelType>(
                   //     create: (context) => ChangeModelType(),
@@ -87,9 +87,7 @@ class _AddInputState extends State<AddInput> {
 }
 
 class PanelForKeyboard extends StatelessWidget {
-  const PanelForKeyboard(
-    this.body,
-  );
+  const PanelForKeyboard(this.body, {super.key});
   final Widget body;
   void _insertText(String myText) {
     final text = _amountController.text;
@@ -108,7 +106,7 @@ class PanelForKeyboard extends StatelessWidget {
       // input can not have more than 2 numbers after a decimal point
       if (fractionalNumber.length > 2) {
         String wholeNumber = newText.split('.').first;
-        newText = wholeNumber + '.' + fractionalNumber.substring(0, 2);
+        newText = '$wholeNumber.${fractionalNumber.substring(0, 2)}';
       }
 
       if (newText.substring(newText.length - 1) == '.') {
@@ -207,10 +205,10 @@ class PanelForKeyboard extends StatelessWidget {
           },
           page: model.type == 'Income'
               // Provider.of<ChangeModelType>(context).modelType == 'Income'
-              ? IncomeCategory()
-              : ExpenseCategory(),
+              ? const IncomeCategory()
+              : const ExpenseCategory(),
         ),
-        body: this.body);
+        body: body);
   }
 }
 
@@ -220,6 +218,7 @@ class AddEditInput extends StatelessWidget {
   final String? type;
   final IconData? categoryIcon;
   const AddEditInput({
+    super.key,
     required this.formKey,
     this.inputModel,
     this.type,
@@ -227,14 +226,14 @@ class AddEditInput extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    if (this.inputModel != null) {
-      model = this.inputModel!;
-      defaultCategory = categoryItem(this.categoryIcon!, model.category!);
+    if (inputModel != null) {
+      model = inputModel!;
+      defaultCategory = categoryItem(categoryIcon!, model.category!);
       // Provider.of<ChangeModelType>(context, listen: false)
       //     .changeModelType(this.inputModel!.type!);
     } else {
       model = InputModel(
-        type: this.type,
+        type: type,
       );
       defaultCategory = categoryItem(Icons.category_outlined, 'Category');
       // Provider.of<ChangeModelType>(context, listen: false)
@@ -243,7 +242,7 @@ class AddEditInput extends StatelessWidget {
     return ChangeNotifierProvider<ChangeCategoryA>(
         create: (context) => ChangeCategoryA(),
         child: ListView(children: [
-          AmountCard(),
+          const AmountCard(),
           SizedBox(
             height: 30.h,
           ),
@@ -254,7 +253,7 @@ class AddEditInput extends StatelessWidget {
                   color: grey,
                   width: 0.6.w,
                 )),
-            child: Column(
+            child: const Column(
               children: [
                 CategoryCard(),
                 DescriptionCard(),
@@ -264,23 +263,25 @@ class AddEditInput extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 70.h),
-            child: this.inputModel != null
+            child: inputModel != null
                 ? SaveAndDeleteButton(
                     saveAndDeleteInput: true,
-                    formKey: this.formKey,
+                    formKey: formKey,
                   )
-                : SaveButton(true, null, true),
+                : const SaveButton(true, null, true),
           )
         ]));
   }
 }
 
 class AmountCard extends StatefulWidget {
+  const AmountCard({super.key});
+
   @override
-  _AmountCardState createState() => _AmountCardState();
+  AmountCardState createState() => AmountCardState();
 }
 
-class _AmountCardState extends State<AmountCard> {
+class AmountCardState extends State<AmountCard> {
   @override
   void initState() {
     super.initState();
@@ -350,7 +351,7 @@ class _AmountCardState extends State<AmountCard> {
                     color: colorMain,
                   ),
                 ),
-                suffixIcon: _amountController.text.length > 0
+                suffixIcon: _amountController.text.isNotEmpty
                     ? IconButton(
                         icon: Icon(
                           Icons.clear,
@@ -359,7 +360,7 @@ class _AmountCardState extends State<AmountCard> {
                         onPressed: () {
                           _amountController.clear();
                         })
-                    : SizedBox(),
+                    : const SizedBox(),
               ),
             ),
           ],
@@ -370,11 +371,13 @@ class _AmountCardState extends State<AmountCard> {
 }
 
 class CategoryCard extends StatefulWidget {
+  const CategoryCard({super.key});
+
   @override
-  _CategoryCardState createState() => _CategoryCardState();
+  CategoryCardState createState() => CategoryCardState();
 }
 
-class _CategoryCardState extends State<CategoryCard> {
+class CategoryCardState extends State<CategoryCard> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ChangeCategoryA>(builder: (_, changeCategoryA, __) {
@@ -390,8 +393,8 @@ class _CategoryCardState extends State<CategoryCard> {
               context,
               MaterialPageRoute(
                   builder: (context) => model.type == 'Income'
-                      ? IncomeCategory()
-                      : ExpenseCategory()),
+                      ? const IncomeCategory()
+                      : const ExpenseCategory()),
             );
             changeCategoryA.changeCategory(newCategoryItem);
           },
@@ -440,11 +443,13 @@ class _CategoryCardState extends State<CategoryCard> {
 }
 
 class DescriptionCard extends StatefulWidget {
+  const DescriptionCard({super.key});
+
   @override
-  _DescriptionCardState createState() => _DescriptionCardState();
+  DescriptionCardState createState() => DescriptionCardState();
 }
 
-class _DescriptionCardState extends State<DescriptionCard> {
+class DescriptionCardState extends State<DescriptionCard> {
   static late TextEditingController descriptionController;
 
   @override
@@ -561,7 +566,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
                   fontSize: 22.sp,
                   fontStyle: FontStyle.italic,
                 ),
-                suffixIcon: descriptionController.text.length > 0
+                suffixIcon: descriptionController.text.isNotEmpty
                     ? IconButton(
                         icon: Icon(
                           Icons.clear,
@@ -570,7 +575,7 @@ class _DescriptionCardState extends State<DescriptionCard> {
                         onPressed: () {
                           descriptionController.clear();
                         })
-                    : SizedBox(),
+                    : const SizedBox(),
                 icon: Padding(
                   padding: EdgeInsets.only(right: 15.w),
                   child: Icon(
@@ -593,12 +598,12 @@ class _DescriptionCardState extends State<DescriptionCard> {
 }
 
 class DateCard extends StatefulWidget {
-  const DateCard();
+  const DateCard({super.key});
   @override
-  _DateCardState createState() => _DateCardState();
+  DateCardState createState() => DateCardState();
 }
 
-class _DateCardState extends State<DateCard> {
+class DateCardState extends State<DateCard> {
   @override
   Widget build(BuildContext context) {
     if (model.date == null) {
@@ -619,7 +624,7 @@ class _DateCardState extends State<DateCard> {
                 headerColor: blue3,
                 headerTextColor: Colors.black,
                 backgroundColor: white,
-                buttonTextColor: Color.fromRGBO(80, 157, 253, 1),
+                buttonTextColor: const Color.fromRGBO(80, 157, 253, 1),
                 cancelText: getTranslated(context, 'CANCEL'),
                 confirmText: getTranslated(context, 'OK') ?? 'OK',
                 maxLongSide: 450.w,
@@ -647,9 +652,8 @@ class _DateCardState extends State<DateCard> {
                   ),
                 ),
                 Text(
-                  DateFormat(sharedPrefs.dateFormat).format(
-                      DateFormat('dd/MM/yyyy').parse(
-                          model.date!)),
+                  DateFormat(sharedPrefs.dateFormat)
+                      .format(DateFormat('dd/MM/yyyy').parse(model.date!)),
                   style: GoogleFonts.aBeeZee(
                     fontSize: 21.5.sp,
                   ),
@@ -657,7 +661,7 @@ class _DateCardState extends State<DateCard> {
               ],
             ),
           ),
-          Spacer(),
+          const Spacer(),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
@@ -673,10 +677,10 @@ class _DateCardState extends State<DateCard> {
                         horizontal: 50.w, vertical: 30.0.h),
                     elevation: 12,
                     context: context,
-                    value: selectedTime,
+                    value: Time.fromTimeOfDay(selectedTime, 0),
                     is24HrFormat: true,
                     onChange: (value) => setState(() {
-                          selectedTime = value;
+                          selectedTime = value.toTimeOfDay();
                           model.time = value.format(context);
                         })),
               );
@@ -698,18 +702,21 @@ void saveInputFunc(BuildContext context, bool saveFunction) {
   model.amount = _amountController.text.isEmpty
       ? 0
       : double.parse(_amountController.text.replaceAll(',', ''));
-  model.description = _DescriptionCardState.descriptionController.text;
+  model.description = DescriptionCardState.descriptionController.text;
   if (saveFunction) {
     DB.insert(model);
     _amountController.clear();
-    if (_DescriptionCardState.descriptionController.text.length > 0) {
-      _DescriptionCardState.descriptionController.clear();
+    if (DescriptionCardState.descriptionController.text.isNotEmpty) {
+      DescriptionCardState.descriptionController.clear();
     }
     customToast(context, 'Data has been saved');
   } else {
     DB.update(model);
     Navigator.pop(context);
-    customToast(context, getTranslated(context, 'Transaction has been updated') ?? 'Transaction has been updated');
+    customToast(
+        context,
+        getTranslated(context, 'Transaction has been updated') ??
+            'Transaction has been updated');
   }
 }
 

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
+
+import '../localization/methods.dart';
 
 Future<void> iosDialog(BuildContext context, String content, String action,
         Function onAction) =>
@@ -25,28 +26,28 @@ Future<void> iosDialog(BuildContext context, String content, String action,
                 onPressed: () {
                   Navigator.pop(context);
                 },
+                isDefaultAction: false,
+                isDestructiveAction: false,
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 3.w),
                   child: Text(getTranslated(context, 'Cancel') ?? 'Cancel',
                       style: TextStyle(
                           fontSize: 19.5.sp, fontWeight: FontWeight.w600)),
                 ),
-                isDefaultAction: false,
-                isDestructiveAction: false,
               ),
               CupertinoDialogAction(
                 onPressed: () {
                   onAction();
                   Navigator.pop(context);
                 },
+                isDefaultAction: true,
+                isDestructiveAction: true,
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 3.w),
                   child: Text(getTranslated(context, action) ?? action,
                       style: TextStyle(
                           fontSize: 19.5.sp, fontWeight: FontWeight.w600)),
                 ),
-                isDefaultAction: true,
-                isDestructiveAction: true,
               )
             ],
           );
@@ -59,8 +60,7 @@ Future<void> androidDialog(BuildContext context, String content, String action,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(getTranslated(context, 'Please Confirm')!),
-            content: Text(
-                getTranslated(context, content) ?? content),
+            content: Text(getTranslated(context, content) ?? content),
             actions: [
               TextButton(
                   onPressed: () {

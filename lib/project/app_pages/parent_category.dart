@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/classes/app_bar.dart';
-import 'package:money_assistant_2608/project/classes/category_item.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
+
+import '../classes/app_bar.dart';
+import '../classes/category_item.dart';
+import '../classes/constants.dart';
+import '../database_management/shared_preferences_services.dart';
+import '../localization/methods.dart';
 
 class ParentCategoryList extends StatelessWidget {
+  const ParentCategoryList({super.key});
+
   @override
   Widget build(BuildContext context) {
-    List<CategoryItem> parentCategories = sharedPrefs.getAllExpenseItemsLists()
+    List<CategoryItem> parentCategories = sharedPrefs
+        .getAllExpenseItemsLists()
         .map((item) => CategoryItem(
             item[0].iconCodePoint,
             item[0].iconFontPackage,
@@ -21,13 +25,11 @@ class ParentCategoryList extends StatelessWidget {
       appBar: BasicAppBar(getTranslated(context, 'Parent category')!),
       body: ListView.builder(
         itemCount: parentCategories.length,
-        itemBuilder: (context, int) {
+        itemBuilder: (context, int count) {
           return GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
-                Navigator.pop(
-                    context,
-                    parentCategories[int]);
+                Navigator.pop(context, parentCategories[count]);
               },
               child: Column(
                 children: [
@@ -37,10 +39,11 @@ class ParentCategoryList extends StatelessWidget {
                     child: Row(
                       children: [
                         CircleAvatar(
-                            backgroundColor: Color.fromRGBO(215, 223, 231, 1),
+                            backgroundColor:
+                                const Color.fromRGBO(215, 223, 231, 1),
                             radius: 20.r,
                             child: Icon(
-                              iconData(parentCategories[int]),
+                              iconData(parentCategories[count]),
                               size: 25.sp,
                               color: red,
                             )),
@@ -49,8 +52,9 @@ class ParentCategoryList extends StatelessWidget {
                         ),
                         Expanded(
                           child: Text(
-                            getTranslated(context, parentCategories[int].text) ??
-                                parentCategories[int].text,
+                            getTranslated(
+                                    context, parentCategories[count].text) ??
+                                parentCategories[count].text,
                             style: TextStyle(fontSize: 22.sp),
                             overflow: TextOverflow.ellipsis,
                           ),

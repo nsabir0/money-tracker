@@ -5,33 +5,33 @@ import 'app_localization.dart';
 Locale locale(String languageCode) {
   switch (languageCode) {
     case 'en':
-      return Locale('en', 'US');
+      return const Locale('en', 'US');
     // case 'ar':
     //   return Locale('ar', "SA");
     case 'de':
-      return Locale('de', "DE");
+      return const Locale('de', "DE");
     case 'es':
-      return Locale('es', 'ES');
+      return const Locale('es', 'ES');
     case 'fr':
-      return Locale('fr', "FR");
+      return const Locale('fr', "FR");
     case 'hi':
-      return Locale('hi', "IN");
+      return const Locale('hi', "IN");
     case 'ja':
-      return Locale('ja', "JP");
+      return const Locale('ja', "JP");
     case 'ko':
-      return Locale('ko', 'KR');
+      return const Locale('ko', 'KR');
     case 'pt':
-      return Locale('pt', "PT");
+      return const Locale('pt', "PT");
     case 'ru':
-      return Locale('ru', "RU");
+      return const Locale('ru', "RU");
     case 'tr':
-      return Locale('tr', "TR");
+      return const Locale('tr', "TR");
     case 'vi':
-      return Locale('vi', "VN");
+      return const Locale('vi', "VN");
     case 'zh':
-      return Locale('zh', "CN");
+      return const Locale('zh', "CN");
     default:
-      return Locale('en', 'US');
+      return const Locale('en', 'US');
   }
 }
 

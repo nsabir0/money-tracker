@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/localization/language.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
 import 'package:provider/provider.dart';
 
+import '../classes/constants.dart';
+import '../database_management/shared_preferences_services.dart';
+import '../localization/language.dart';
+import '../localization/methods.dart';
 import '../provider.dart';
 import '../real_main.dart';
 
 class SelectLanguage extends StatefulWidget {
+  const SelectLanguage({super.key});
+
   @override
-  _SelectLanguageState createState() => _SelectLanguageState();
+  SelectLanguageState createState() => SelectLanguageState();
 }
 
-class _SelectLanguageState extends State<SelectLanguage> {
-
+class SelectLanguageState extends State<SelectLanguage> {
   @override
   Widget build(BuildContext context) {
     List<Language> languageList = Language.languageList;
@@ -35,21 +36,21 @@ class _SelectLanguageState extends State<SelectLanguage> {
                   onPressed: () => Navigator.pop(context),
                 ),
               )
-            ]
-        ),
+            ]),
         body: ChangeNotifierProvider<OnLanguageSelected>(
           create: (context) => OnLanguageSelected(),
           builder: (context, widget) => ListView.builder(
               itemCount: languageList.length,
-              itemBuilder: (context, int) {
+              itemBuilder: (context, int count) {
                 return GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    Locale _locale = sharedPrefs.setLocale(languageList[int].languageCode);
-                    MyApp.setLocale(context, _locale);
+                    Locale locale =
+                        sharedPrefs.setLocale(languageList[count].languageCode);
+                    MyApp.setLocale(context, locale);
                     context
                         .read<OnLanguageSelected>()
-                        .onSelect(languageList[int].languageCode);
+                        .onSelect(languageList[count].languageCode);
                   },
                   child: Column(
                     children: [
@@ -59,22 +60,22 @@ class _SelectLanguageState extends State<SelectLanguage> {
                         child: Row(
                           children: [
                             Text(
-                              languageList[int].flag,
+                              languageList[count].flag,
                               style: TextStyle(fontSize: 45.sp),
                             ),
                             SizedBox(
                               width: 35.w,
                             ),
-                            Text(languageList[int].name,
+                            Text(languageList[count].name,
                                 style: TextStyle(
                                   fontSize: 20.sp,
                                 )),
-                            Spacer(),
+                            const Spacer(),
                             context.watch<OnLanguageSelected>().languageCode ==
-                                    languageList[int].languageCode
+                                    languageList[count].languageCode
                                 ? Icon(Icons.check_circle,
                                     size: 25.sp, color: blue3)
-                                : SizedBox(),
+                                : const SizedBox(),
                             SizedBox(width: 15.w)
                           ],
                         ),

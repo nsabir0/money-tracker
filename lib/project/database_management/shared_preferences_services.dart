@@ -1,8 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
-import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -11,12 +10,13 @@ import 'package:icofont_flutter/icofont_flutter.dart';
 import 'package:intl/intl.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:money_assistant_2608/project/classes/category_item.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../classes/category_item.dart';
+import '../classes/constants.dart';
+import '../localization/methods.dart';
 
 final sharedPrefs = SharedPrefs();
 // constants/strings.dart
@@ -28,9 +28,7 @@ class SharedPrefs {
   static SharedPreferences? _sharedPrefs;
 
   sharePrefsInit() async {
-    if (_sharedPrefs == null) {
-      _sharedPrefs = await SharedPreferences.getInstance();
-    }
+    _sharedPrefs ??= await SharedPreferences.getInstance();
   }
 
   String get selectedDate => _sharedPrefs!.getString('selectedDate')!;
@@ -50,7 +48,6 @@ class SharedPrefs {
 
   set dateFormat(String dateFormat) =>
       _sharedPrefs!.setString('dateFormat', dateFormat);
-
 
   bool get isPasscodeOn => _sharedPrefs!.getBool('isPasscodeOn') ?? false;
 
@@ -109,9 +106,8 @@ class SharedPrefs {
 
   List<List<CategoryItem>> getAllExpenseItemsLists() {
     List<List<CategoryItem>> expenseItemsLists = [];
-    for (int i = 0; i < this.parentExpenseItemNames.length; i++) {
-      var parentExpenseItem =
-          sharedPrefs.getItems(this.parentExpenseItemNames[i]);
+    for (int i = 0; i < parentExpenseItemNames.length; i++) {
+      var parentExpenseItem = sharedPrefs.getItems(parentExpenseItemNames[i]);
       expenseItemsLists.add(parentExpenseItem);
     }
     return expenseItemsLists;
@@ -191,7 +187,7 @@ class SharedPrefs {
         categoryItem(MdiIcons.dogService, 'Pets'),
         categoryItem(MdiIcons.tableChair, 'Furnishings'),
         categoryItem(MdiIcons.autoFix, 'Home Services'),
-        categoryItem(MdiIcons.homeCurrencyUsd, 'Mortgage & Rent'),
+        categoryItem(MdiIcons.currencyUsd, 'Mortgage & Rent'),
       ]);
 
       saveItems('Utility Bills', [
@@ -236,7 +232,7 @@ class SharedPrefs {
       }
     }
     if (_sharedPrefs!.containsKey('parent expense item names') == false) {
-      print('didnt save successfully');
+      log('didnt save successfully');
     }
   }
 }

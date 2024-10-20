@@ -1,27 +1,28 @@
 import 'dart:core';
+import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:in_app_review/in_app_review.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
-import 'package:money_assistant_2608/project/app_pages/select_date_format.dart';
-import 'package:money_assistant_2608/project/app_pages/select_language.dart';
-import 'package:money_assistant_2608/project/auth_pages/user_account.dart';
-import 'package:money_assistant_2608/project/classes/alert_dialog.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/classes/custom_toast.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/database_management/sqflite_services.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:io' show Platform;
+import '../auth_pages/user_account.dart';
+import '../classes/alert_dialog.dart';
+import '../classes/constants.dart';
+import '../classes/custom_toast.dart';
+import '../database_management/shared_preferences_services.dart';
+import '../database_management/sqflite_services.dart';
+import '../localization/methods.dart';
 import '../provider.dart';
 import 'currency.dart';
+import 'select_date_format.dart';
+import 'select_language.dart';
 
 class Other extends StatelessWidget {
+  const Other({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,16 +40,16 @@ class Other extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
-                    child: CircleAvatar(
-                        child: Icon(
-                          FontAwesomeIcons.smileBeam,
-                          color: Colors.black,
-                          size: 71.sp,
-                        ),
-                        radius: 35.r,
-                        backgroundColor: blue1),
                     radius: 40.r,
                     backgroundColor: Colors.orangeAccent,
+                    child: CircleAvatar(
+                        radius: 35.r,
+                        backgroundColor: blue1,
+                        child: Icon(
+                          FontAwesomeIcons.faceSmileBeam,
+                          color: Colors.black,
+                          size: 71.sp,
+                        )),
                   ),
                   SizedBox(
                     width: 20.w,
@@ -75,22 +76,22 @@ class Other extends StatelessWidget {
 
 class Settings extends StatefulWidget {
   final BuildContext providerContext;
-  const Settings({required this.providerContext});
+  const Settings({super.key, required this.providerContext});
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<Settings> createState() => SettingsState();
 }
 
-class _SettingsState extends State<Settings> {
+class SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     List<Widget> pageRoute = [
-      UserAccount(),
-      SelectLanguage(),
-      Currency(),
+      const UserAccount(),
+      const SelectLanguage(),
+      const Currency(),
     ];
     List<Widget> settingsIcons = [
-      Icon(
+      const Icon(
         Icons.account_circle,
         size: 35,
         color: Colors.lightBlue,
@@ -136,9 +137,7 @@ class _SettingsState extends State<Settings> {
       // getTranslated(context, 'Feedback')!,
       getTranslated(context, 'Language') ?? 'Language',
       getTranslated(context, 'Currency') ?? 'Currency',
-      (getTranslated(context, 'Date format') ??
-          'Date format') +
-              ' (${DateFormat(sharedPrefs.dateFormat).format(now)})',
+      '${getTranslated(context, 'Date format') ?? 'Date format'} (${DateFormat(sharedPrefs.dateFormat).format(now)})',
       getTranslated(context, 'Reset All Categories') ?? 'Reset All Categories',
       getTranslated(context, 'Delete All Data') ?? 'Delete All Data',
       // getTranslated(context, 'Enable Passcode') ?? 'Enable Passcode',
@@ -148,7 +147,7 @@ class _SettingsState extends State<Settings> {
 
     return ListView.builder(
         itemCount: settingsList.length,
-        itemBuilder: (context, int) {
+        itemBuilder: (context, int count) {
           // void onPasscodeSwitched() {
           //   context.read<OnSwitch>().onSwitch();
           //   if (context.read<OnSwitch>().isPasscodeOn) {
@@ -163,14 +162,16 @@ class _SettingsState extends State<Settings> {
 
           return GestureDetector(
             onTap: () async {
-              if ((int == 0) || (int == 1) || (int == 2)) {
+              if ((count == 0) || (count == 1) || (count == 2)) {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => pageRoute[int]));
-              } else if (int == 3) {
-                Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => FormatDate()))
+                    MaterialPageRoute(builder: (context) => pageRoute[count]));
+              } else if (count == 3) {
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FormatDate()))
                     .then((value) => setState(() {}));
-              } else if (int == 4) {
+              } else if (count == 4) {
                 // Navigator.push(
                 //     context,
                 //     MaterialPageRoute(
@@ -191,7 +192,7 @@ class _SettingsState extends State<Settings> {
                         'This action cannot be undone. Are you sure you want to reset all categories?',
                         'reset',
                         onReset);
-              } else if (int == 5) {
+              } else if (count == 5) {
                 Future onDeletion() async {
                   await DB.deleteAll();
                   customToast(context, 'All data has been deleted');
@@ -209,21 +210,19 @@ class _SettingsState extends State<Settings> {
                         'Delete',
                         onDeletion);
               }
-              // else if (int == 4) {
+              // else if (count == 4) {
               //   onPasscodeSwitched();
               // }
-              else if (int == 6) {
+              else if (count == 6) {
                 Share.share(
                     'https://apps.apple.com/us/app/mmas-money-tracker-bookkeeper/id1582638369');
+              } else {
+                final InAppReview inAppReview = InAppReview.instance;
+                await inAppReview.openStoreListing(
+                  appStoreId:
+                      Platform.isIOS ? '1582638369' : 'com.mmas.money_tracker',
+                );
               }
-              // else {
-              //   final InAppReview inAppReview = InAppReview.instance;
-              //   await inAppReview.openStoreListing(
-              //     appStoreId: Platform.isIOS
-              //         ? '1582638369'
-              //         : 'com.mmas.money_assistant_2608',
-              //   );
-              // }
             },
             child: Column(
               children: [
@@ -235,16 +234,17 @@ class _SettingsState extends State<Settings> {
                       title: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.w),
                         child: Text(
-                          '${settingsList[int]}',
+                          settingsList[count],
                           style: TextStyle(fontSize: 18.5.sp),
                         ),
                       ),
                       leading: CircleAvatar(
                           radius: 24.r,
-                          backgroundColor: Color.fromRGBO(229, 231, 234, 1),
-                          child: settingsIcons[int]),
+                          backgroundColor:
+                              const Color.fromRGBO(229, 231, 234, 1),
+                          child: settingsIcons[count]),
                       trailing:
-                          // int == 4
+                          // count == 4
                           // ? Switch(
                           //     value: context.watch<OnSwitch>().isPasscodeOn,
                           //     onChanged: (value) {

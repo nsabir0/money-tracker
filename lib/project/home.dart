@@ -1,30 +1,31 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/database_management/sqflite_services.dart';
 import 'package:rate_my_app/rate_my_app.dart';
-import 'dart:io' show Platform;
 import 'app_pages/analysis.dart';
 import 'app_pages/input.dart';
+import 'classes/constants.dart';
+import 'database_management/sqflite_services.dart';
 import 'localization/methods.dart';
 import 'app_pages/calendar.dart';
 import 'app_pages/others.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
-  _HomeState createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> {
+class HomeState extends State<Home> {
   int _selectedIndex = 0;
   List<Widget> myBody = [
-    AddInput(),
-    Analysis(),
-    Calendar(),
-    Other(),
+    const AddInput(),
+    const Analysis(),
+    const Calendar(),
+    const Other(),
   ];
   BottomNavigationBarItem bottomNavigationBarItem(
           IconData iconData, String label) =>
@@ -48,19 +49,18 @@ class _HomeState extends State<Home> {
       minLaunches: 1,
       remindDays: 4,
       remindLaunches: 15,
-      googlePlayIdentifier: 'com.mmas.money_assistant_2608',
+      googlePlayIdentifier: 'com.mmas.money_tracker',
       appStoreIdentifier: '1582638369',
     );
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
-
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await rateMyApp.init();
-      rateMyApp.conditions.forEach((condition) {
+      for (var condition in rateMyApp.conditions) {
         if (condition is DebuggableCondition) {
-          print(condition.valuesAsString);
+          log(condition.toString());
           // condition.reset();
         }
-      });
+      }
       if (mounted && rateMyApp.shouldOpenDialog) {
         rateMyApp.showRateDialog(
           context,

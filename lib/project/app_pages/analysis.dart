@@ -1,18 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:money_assistant_2608/project/classes/app_bar.dart';
-import 'package:money_assistant_2608/project/classes/category_item.dart';
-import 'package:money_assistant_2608/project/classes/chart_pie.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/classes/dropdown_box.dart';
-import 'package:money_assistant_2608/project/classes/input_model.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/database_management/sqflite_services.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
 import 'package:provider/provider.dart';
+import '../classes/app_bar.dart';
+import '../classes/category_item.dart';
+import '../classes/chart_pie.dart';
+import '../classes/constants.dart';
+import '../classes/dropdown_box.dart';
+import '../classes/input_model.dart';
+import '../database_management/shared_preferences_services.dart';
+import '../database_management/sqflite_services.dart';
+import '../localization/methods.dart';
 import '../provider.dart';
 import 'report.dart';
 
@@ -29,11 +28,13 @@ final List<InputModel> chartDataNull = [
 ];
 
 class Analysis extends StatefulWidget {
+  const Analysis({super.key});
+
   @override
-  _AnalysisState createState() => _AnalysisState();
+  AnalysisState createState() => AnalysisState();
 }
 
-class _AnalysisState extends State<Analysis> {
+class AnalysisState extends State<Analysis> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ChangeSelectedDate>(
@@ -43,7 +44,7 @@ class _AnalysisState extends State<Analysis> {
         length: 2,
         child: Scaffold(
             backgroundColor: blue1,
-            appBar: InExAppBar(false),
+            appBar: const InExAppBar(false),
             body: Selector<ChangeSelectedDate, String?>(
                 selector: (_, changeSelectedDate) =>
                     changeSelectedDate.selectedAnalysisDate,
@@ -70,7 +71,7 @@ class _AnalysisState extends State<Analysis> {
 class ShowDate extends StatelessWidget {
   final bool forAnalysis;
   final String selectedDate;
-  const ShowDate(this.forAnalysis, this.selectedDate);
+  const ShowDate(this.forAnalysis, this.selectedDate, {super.key});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -83,14 +84,14 @@ class ShowDate extends StatelessWidget {
             Icon(
               Icons.calendar_today,
               size: 27.sp,
-              color: Color.fromRGBO(82, 179, 252, 1),
+              color: const Color.fromRGBO(82, 179, 252, 1),
             ),
             SizedBox(
               width: 10.w,
             ),
-            DateDisplay(this.selectedDate),
-            Spacer(),
-            DropDownBox(this.forAnalysis, this.selectedDate)
+            DateDisplay(selectedDate),
+            const Spacer(),
+            DropDownBox(forAnalysis, selectedDate)
           ],
         ));
   }
@@ -98,7 +99,7 @@ class ShowDate extends StatelessWidget {
 
 class DateDisplay extends StatelessWidget {
   final String selectedDate;
-  DateDisplay(this.selectedDate);
+  const DateDisplay(this.selectedDate, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +109,7 @@ class DateDisplay extends StatelessWidget {
         GoogleFonts.aBeeZee(fontSize: 20.sp, fontWeight: FontWeight.bold);
 
     Map<String, Widget> dateMap = {
-      'Today': Text('$today', style: style),
+      'Today': Text(today, style: style),
       'This week': Text(
         '$since ${DateFormat(sharedPrefs.dateFormat).format(startOfThisWeek)}',
         style: style,
@@ -124,7 +125,7 @@ class DateDisplay extends StatelessWidget {
         '$since ${DateFormat(sharedPrefs.dateFormat).format(startOfThisYear)}',
         style: style,
       ),
-      'All': Text('${getTranslated(context, 'All')!}', style: style)
+      'All': Text(getTranslated(context, 'All')!, style: style)
     };
     var dateListKey = dateMap.keys.toList();
     var dateListValue = dateMap.values.toList();
@@ -141,7 +142,7 @@ class DateDisplay extends StatelessWidget {
 class ShowMoneyFrame extends StatelessWidget {
   final String type;
   final double typeValue, balance;
-  const ShowMoneyFrame(this.type, this.typeValue, this.balance);
+  const ShowMoneyFrame(this.type, this.typeValue, this.balance, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +156,7 @@ class ShowMoneyFrame extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              format(value) + ' ' + currency,
+              '${format(value)} $currency',
               style: GoogleFonts.aBeeZee(
                   fontSize: format(value.toDouble()).length > 22
                       ? 16.5.sp
@@ -173,7 +174,7 @@ class ShowMoneyFrame extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-          color: Color.fromRGBO(239, 247, 253, 1),
+          color: const Color.fromRGBO(239, 247, 253, 1),
           borderRadius: BorderRadius.circular(40.r),
           border: Border.all(
             color: grey,
@@ -183,11 +184,11 @@ class ShowMoneyFrame extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.5.h),
         child: Column(
           children: [
-            rowFrame(this.type, typeValue),
+            rowFrame(type, typeValue),
             SizedBox(
               height: 12.5.h,
             ),
-            rowFrame('Balance', this.balance)
+            rowFrame('Balance', balance)
           ],
         ),
       ),
@@ -197,13 +198,13 @@ class ShowMoneyFrame extends StatelessWidget {
 
 class ShowDetails extends StatefulWidget {
   final String type, selectedDate;
-  ShowDetails(this.type, this.selectedDate);
+  const ShowDetails(this.type, this.selectedDate, {super.key});
 
   @override
-  _ShowDetailsState createState() => _ShowDetailsState();
+  ShowDetailsState createState() => ShowDetailsState();
 }
 
-class _ShowDetailsState extends State<ShowDetails> {
+class ShowDetailsState extends State<ShowDetails> {
   Widget showInExDetails(
     BuildContext context,
     List<InputModel> transactionsSorted,
@@ -221,11 +222,11 @@ class _ShowDetailsState extends State<ShowDetails> {
             forSelectIconPage: false);
 
     return Column(
-        children: List.generate(itemList.length, (int) {
+        children: List.generate(itemList.length, (int count) {
       return
           // SwipeActionCell(
           // backgroundColor: Colors.transparent,
-          //   key: ObjectKey(transactionsSorted[int]),
+          //   key: ObjectKey(transactionsSorted[count]),
           //   performsFirstActionWithFullSwipe: true,
           //   trailingActions: <SwipeAction>[
           //     SwipeAction(
@@ -233,7 +234,7 @@ class _ShowDetailsState extends State<ShowDetails> {
           //         onTap: (CompletionHandler handler) async {
           //           Future<void> onDeletion() async {
           //             await handler(true);
-          //             transactionsSorted.removeAt(int);
+          //             transactionsSorted.removeAt(count);
           //             customToast(context, 'Transactions has been deleted');
           //             setState(() {});
           //           }
@@ -259,18 +260,18 @@ class _ShowDetailsState extends State<ShowDetails> {
                     MaterialPageRoute(
                         builder: (context) => Report(
                               type: widget.type,
-                              category: itemList[int].text,
+                              category: itemList[count].text,
                               selectedDate: widget.selectedDate,
-                              icon: iconData(itemList[int]),
+                              icon: iconData(itemList[count]),
                             ))).then((value) => setState(() {}));
               },
               child: CategoryDetails(
                   widget.type,
-                  getTranslated(context, itemList[int].text) ??
-                      itemList[int].text,
-                  transactionsSorted[int].amount!,
-                  transactionsSorted[int].color,
-                  iconData(itemList[int]),
+                  getTranslated(context, itemList[count].text) ??
+                      itemList[count].text,
+                  transactionsSorted[count].amount!,
+                  transactionsSorted[count].color,
+                  iconData(itemList[count]),
                   false));
     }));
   }
@@ -279,23 +280,23 @@ class _ShowDetailsState extends State<ShowDetails> {
   Widget build(BuildContext context) {
     late Map<String, double> chartDataMap;
     return FutureBuilder<List<InputModel>>(
-        initialData: [],
+        initialData: const [],
         future: DB.inputModelList(),
         builder:
             (BuildContext context, AsyncSnapshot<List<InputModel>> snapshot) {
           connectionUI(snapshot);
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return ShowNullDetail(0, null, this.widget.type, false);
+            return ShowNullDetail(0, null, widget.type, false);
           }
           if (snapshot.data == null) {
-            return ShowNullDetail(0, chartDataNull, this.widget.type, true);
+            return ShowNullDetail(0, chartDataNull, widget.type, true);
           } else {
             double income = 0, expense = 0, balance = 0;
 
             List<InputModel> allTransactions =
                 filterData(context, snapshot.data!, widget.selectedDate);
 
-            if (allTransactions.length > 0) {
+            if (allTransactions.isNotEmpty) {
               //prepare for MoneyFrame
 
               List<double?> incomeList = [], expenseList = [];
@@ -317,12 +318,12 @@ class _ShowDetailsState extends State<ShowDetails> {
                   .where((element) => element != null)
                   .toList();
 
-              if (incomeList.length > 0) {
+              if (incomeList.isNotEmpty) {
                 for (int i = 0; i < incomeList.length; i++) {
                   income = income + incomeList[i]!;
                 }
               }
-              if (expenseList.length > 0) {
+              if (expenseList.isNotEmpty) {
                 for (int i = 0; i < expenseList.length; i++) {
                   expense = expense + expenseList[i]!;
                 }
@@ -330,7 +331,7 @@ class _ShowDetailsState extends State<ShowDetails> {
               balance = income - expense;
 
               // prepare for InExDetails
-              if (this.widget.type == 'Income') {
+              if (widget.type == 'Income') {
                 allTransactions = allTransactions
                     .map((data) {
                       if (data.type == 'Income') {
@@ -353,13 +354,12 @@ class _ShowDetailsState extends State<ShowDetails> {
               }
             }
 
-            if (allTransactions.length == 0) {
-              return ShowNullDetail(
-                  balance, chartDataNull, this.widget.type, true);
+            if (allTransactions.isEmpty) {
+              return ShowNullDetail(balance, chartDataNull, widget.type, true);
             } else {
               List<InputModel> transactionsSorted = [
                 InputModel(
-                  type: this.widget.type,
+                  type: widget.type,
                   amount: allTransactions[0].amount,
                   category: allTransactions[0].category,
                 )
@@ -393,7 +393,7 @@ class _ShowDetailsState extends State<ShowDetails> {
                 }
                 transactionsSorted = chartDataMap.entries
                     .map((entry) => InputModel(
-                          type: this.widget.type,
+                          type: widget.type,
                           category: entry.key,
                           amount: entry.value,
                         ))
@@ -415,8 +415,8 @@ class _ShowDetailsState extends State<ShowDetails> {
               }
               return Column(
                 children: [
-                  ShowMoneyFrame(this.widget.type,
-                      this.widget.type == 'Income' ? income : expense, balance),
+                  ShowMoneyFrame(widget.type,
+                      widget.type == 'Income' ? income : expense, balance),
                   SizedBox(height: 360.h, child: ChartPie(transactionsSorted)),
                   showInExDetails(
                     context,
@@ -436,22 +436,19 @@ class ShowNullDetail extends StatelessWidget {
   final List<InputModel>? chartData;
   final String type;
   final bool connection;
-  ShowNullDetail(this.balanceValue, this.chartData, this.type, this.connection);
+  const ShowNullDetail(
+      this.balanceValue, this.chartData, this.type, this.connection,
+      {super.key});
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ShowMoneyFrame(this.type, 0, this.balanceValue),
+        ShowMoneyFrame(type, 0, balanceValue),
         SizedBox(
             height: 360.h,
-            child: connection == false ? null : ChartPie(this.chartData!)),
-        CategoryDetails(
-            this.type,
-            getTranslated(context, 'Category') ?? 'Category',
-            0,
-            this.type == 'Income' ? green : red,
-            Icons.category_outlined,
-            true)
+            child: connection == false ? null : ChartPie(chartData!)),
+        CategoryDetails(type, getTranslated(context, 'Category') ?? 'Category',
+            0, type == 'Income' ? green : red, Icons.category_outlined, true)
       ],
     );
   }
@@ -463,8 +460,9 @@ class CategoryDetails extends StatelessWidget {
   final Color? color;
   final IconData icon;
   final bool forNullDetail;
-  CategoryDetails(this.type, this.category, this.amount, this.color, this.icon,
-      this.forNullDetail);
+  const CategoryDetails(this.type, this.category, this.amount, this.color,
+      this.icon, this.forNullDetail,
+      {super.key});
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -478,19 +476,19 @@ class CategoryDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Icon(
-                this.icon,
+                icon,
                 color: forNullDetail
-                    ? this.type == 'Income'
+                    ? type == 'Income'
                         ? green
                         : red
-                    : this.color,
+                    : color,
                 size: 23.sp,
               ),
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(left: 15.w, right: 10.w),
                   child: Text(
-                    this.category,
+                    category,
                     style: TextStyle(fontSize: 20.sp),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.start,
@@ -502,7 +500,7 @@ class CategoryDetails extends StatelessWidget {
                 flex: 0,
                 child: Text(
                   // '${this.color!.red},' + '${this.color!.green},' + '${this.color!.blue},',
-                  format(amount) + ' ' + currency,
+                  '${format(amount)} $currency',
                   style: GoogleFonts.aBeeZee(fontSize: 20.sp),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.end,
@@ -512,7 +510,7 @@ class CategoryDetails extends StatelessWidget {
                 width: 10.w,
               ),
               forNullDetail
-                  ? SizedBox()
+                  ? const SizedBox()
                   : Icon(
                       Icons.arrow_forward_ios,
                       size: 18.sp,

@@ -1,22 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:money_assistant_2608/project/classes/app_bar.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
 import 'package:provider/provider.dart';
 
+import '../classes/app_bar.dart';
+import '../classes/constants.dart';
+import '../localization/methods.dart';
 import '../provider.dart';
 import 'add_category.dart';
 import 'expense_category.dart';
 
 class EditExpenseCategory extends StatefulWidget {
   final BuildContext buildContext;
-  EditExpenseCategory(this.buildContext);
+  const EditExpenseCategory(this.buildContext, {super.key});
   @override
-  _EditExpenseCategoryState createState() => _EditExpenseCategoryState();
+  EditExpenseCategoryState createState() => EditExpenseCategoryState();
 }
 
-class _EditExpenseCategoryState extends State<EditExpenseCategory> {
+class EditExpenseCategoryState extends State<EditExpenseCategory> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ChangeExpenseItemEdit>(

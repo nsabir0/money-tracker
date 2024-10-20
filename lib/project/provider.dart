@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:money_assistant_2608/project/classes/category_item.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
 
+import 'classes/category_item.dart';
 import 'classes/input_model.dart';
+import 'database_management/shared_preferences_services.dart';
 import 'database_management/sqflite_services.dart';
 
 // input
@@ -18,7 +18,7 @@ class ChangeCategoryA with ChangeNotifier {
 class ChangeModelType with ChangeNotifier {
   String? modelType;
   void changeModelType(String newType) {
-    this.modelType = newType;
+    modelType = newType;
     notifyListeners();
   }
 }
@@ -87,7 +87,7 @@ class ChangeCategory with ChangeNotifier {
   CategoryItem? parentItem;
 
   void changeCategoryIcon(IconData? selectedIcon) {
-    this.selectedCategoryIcon = selectedIcon;
+    selectedCategoryIcon = selectedIcon;
     notifyListeners();
   }
 

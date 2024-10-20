@@ -1,21 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/classes/app_bar.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
-import 'package:money_assistant_2608/project/provider.dart';
 import 'package:provider/provider.dart';
 
+import '../classes/app_bar.dart';
+import '../classes/constants.dart';
+import '../localization/methods.dart';
+import '../provider.dart';
 import 'add_category.dart';
 import 'edit_income_category.dart';
 
 class IncomeCategory extends StatefulWidget {
+  const IncomeCategory({super.key});
+
   @override
-  _IncomeCategoryState createState() => _IncomeCategoryState();
+  IncomeCategoryState createState() => IncomeCategoryState();
 }
 
-class _IncomeCategoryState extends State<IncomeCategory> {
+class IncomeCategoryState extends State<IncomeCategory> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ChangeIncomeItem>(
@@ -32,14 +33,17 @@ class _IncomeCategoryState extends State<IncomeCategory> {
 class IncomeCategoryBody extends StatefulWidget {
   final BuildContext? context, contextEdit;
   final bool editIncomeCategory;
-  IncomeCategoryBody(
-      {this.context, this.contextEdit, required this.editIncomeCategory});
+  const IncomeCategoryBody(
+      {super.key,
+      this.context,
+      this.contextEdit,
+      required this.editIncomeCategory});
 
   @override
-  _IncomeCategoryBodyState createState() => _IncomeCategoryBodyState();
+  IncomeCategoryBodyState createState() => IncomeCategoryBodyState();
 }
 
-class _IncomeCategoryBodyState extends State<IncomeCategoryBody> {
+class IncomeCategoryBodyState extends State<IncomeCategoryBody> {
   @override
   Widget build(BuildContext context) {
     var incomeList = widget.contextEdit == null
@@ -49,12 +53,12 @@ class _IncomeCategoryBodyState extends State<IncomeCategoryBody> {
       padding: EdgeInsets.only(top: 30.h),
       child: ListView.builder(
         itemCount: incomeList.length,
-        itemBuilder: (context, int) {
+        itemBuilder: (context, int count) {
           return Padding(
             padding: EdgeInsets.only(top: 3.h, left: 10.w, right: 10.w),
             child: GestureDetector(
               onLongPress: () {
-                if (this.widget.editIncomeCategory) {
+                if (widget.editIncomeCategory) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -63,13 +67,13 @@ class _IncomeCategoryBodyState extends State<IncomeCategoryBody> {
                               contextInEdit: widget.contextEdit,
                               type: 'Income',
                               appBarTitle: 'Add Income Category',
-                              categoryName: incomeList[int].text,
-                              categoryIcon: iconData(incomeList[int]),
-                              description: incomeList[int].description!)));
+                              categoryName: incomeList[count].text,
+                              categoryIcon: iconData(incomeList[count]),
+                              description: incomeList[count].description!)));
                 }
               },
               onTap: () {
-                if (this.widget.editIncomeCategory) {
+                if (widget.editIncomeCategory) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -78,11 +82,11 @@ class _IncomeCategoryBodyState extends State<IncomeCategoryBody> {
                               contextInEdit: widget.contextEdit,
                               type: 'Income',
                               appBarTitle: 'Add Income Category',
-                              categoryName: incomeList[int].text,
-                              categoryIcon: iconData(incomeList[int]),
-                              description: incomeList[int].description!)));
+                              categoryName: incomeList[count].text,
+                              categoryIcon: iconData(incomeList[count]),
+                              description: incomeList[count].description!)));
                 } else {
-                  Navigator.pop(context, incomeList[int]);
+                  Navigator.pop(context, incomeList[count]);
                 }
               },
               child: Card(
@@ -99,10 +103,10 @@ class _IncomeCategoryBodyState extends State<IncomeCategoryBody> {
                         width: 40.h,
                       ),
                       CircleAvatar(
-                        backgroundColor: Color.fromRGBO(215, 223, 231, 1),
+                        backgroundColor: const Color.fromRGBO(215, 223, 231, 1),
                         radius: 25.r,
                         child: Icon(
-                          iconData(incomeList[int]),
+                          iconData(incomeList[count]),
                           size: 33.sp,
                           color: green,
                         ),
@@ -111,8 +115,8 @@ class _IncomeCategoryBodyState extends State<IncomeCategoryBody> {
                         width: 25.w,
                       ),
                       Text(
-                        getTranslated(context, incomeList[int].text) ??
-                            incomeList[int].text,
+                        getTranslated(context, incomeList[count].text) ??
+                            incomeList[count].text,
                         style: TextStyle(
                             fontSize: 20.sp, fontWeight: FontWeight.bold),
                       )

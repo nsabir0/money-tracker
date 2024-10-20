@@ -1,15 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../classes/constants.dart';
+import '../localization/methods.dart';
 import '../provider.dart';
 
 class FormatDate extends StatelessWidget {
-  const FormatDate({Key? key}) : super(key: key);
+  const FormatDate({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,35 +44,34 @@ class FormatDate extends StatelessWidget {
           create: (context) => OnDateFormatSelected(),
           builder: (context, widget) => ListView.builder(
               itemCount: dateFormats.length,
-              itemBuilder: (context, int) => GestureDetector(
+              itemBuilder: (context, int count) => GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       context
                           .read<OnDateFormatSelected>()
-                          .onDateFormatSelected(dateFormats[int]);
+                          .onDateFormatSelected(dateFormats[count]);
                     },
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.all(
-                                27.h),
+                            padding: EdgeInsets.all(27.h),
                             child: Row(
                               children: [
                                 Text(
-                                  '${DateFormat(dateFormats[int]).format(now)}',
+                                  DateFormat(dateFormats[count]).format(now),
                                   style: TextStyle(
-                                      fontSize: 19.sp,
+                                    fontSize: 19.sp,
                                   ),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 context
                                             .watch<OnDateFormatSelected>()
                                             .dateFormat ==
-                                        dateFormats[int]
+                                        dateFormats[count]
                                     ? Icon(Icons.check_circle,
                                         size: 25.sp, color: blue3)
-                                    : SizedBox()
+                                    : const SizedBox()
                               ],
                             ),
                           ),

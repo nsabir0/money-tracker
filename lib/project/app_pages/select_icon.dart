@@ -1,15 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/classes/app_bar.dart';
-import 'package:money_assistant_2608/project/classes/category_item.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
 
+import '../classes/app_bar.dart';
+import '../classes/category_item.dart';
+import '../classes/constants.dart';
+import '../localization/methods.dart';
 
 class SelectIcon extends StatelessWidget {
   final String type;
-  SelectIcon(this.type);
+  const SelectIcon(this.type, {super.key});
   @override
   Widget build(BuildContext context) {
     final List<CategoryItem> icons = createItemList(
@@ -29,17 +28,16 @@ class SelectIcon extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    Navigator.pop(context, iconData(icons[index])
-                        );
+                    Navigator.pop(context, iconData(icons[index]));
                   },
                   iconSize: 60.sp,
                   icon: CircleAvatar(
-                      backgroundColor: Color.fromRGBO(215, 223, 231, 1),
+                      backgroundColor: const Color.fromRGBO(215, 223, 231, 1),
                       radius: 24.r,
                       child: Icon(
                         iconData(icons[index]),
                         size: 30.sp,
-                        color: this.type == 'Income' ? green : red,
+                        color: type == 'Income' ? green : red,
                       )),
                 ),
               ],

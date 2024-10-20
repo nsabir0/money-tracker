@@ -1,17 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
 
+import '../classes/constants.dart';
 
 // final AuthService _auth = AuthService();
 
 class UserAccount extends StatefulWidget {
+  const UserAccount({super.key});
+
   @override
-  _UserAccountState createState() => _UserAccountState();
+  UserAccountState createState() => UserAccountState();
 }
 
-class _UserAccountState extends State<UserAccount> {
+class UserAccountState extends State<UserAccount> {
   List<String> textList = [
     "Personal information",
     "Account link",
@@ -29,28 +30,29 @@ class _UserAccountState extends State<UserAccount> {
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(270.h),
-          child: Container(
+          child: SizedBox(
             height: 270,
             child: Padding(
-              padding:  EdgeInsets.only(top: 40.h),
+              padding: EdgeInsets.only(top: 40.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:  EdgeInsets.only(left: 20.w),
+                    padding: EdgeInsets.only(left: 20.w),
                     child: IconButton(
-                        icon: Icon(Icons.arrow_back_ios),
+                        icon: const Icon(Icons.arrow_back_ios),
                         onPressed: () {
                           Navigator.pop(context);
                         }),
                   ),
                   Center(
                     child: CircleAvatar(
-                      child: CircleAvatar(
-                          radius: 30.r,
-                          backgroundColor: Color.fromRGBO(210, 234, 251, 1)),
                       radius: 35.r,
                       backgroundColor: Colors.grey,
+                      child: CircleAvatar(
+                          radius: 30.r,
+                          backgroundColor:
+                              const Color.fromRGBO(210, 234, 251, 1)),
                     ),
                   ),
                   SizedBox(
@@ -59,7 +61,8 @@ class _UserAccountState extends State<UserAccount> {
                   Center(
                       child: Text(
                     "User name",
-                    style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(fontSize: 25.sp, fontWeight: FontWeight.bold),
                   )),
                   SizedBox(
                     height: 15.h,
@@ -75,7 +78,7 @@ class _UserAccountState extends State<UserAccount> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.crop_free),
+                          const Icon(Icons.crop_free),
                           SizedBox(
                             width: 3.w,
                           ),
@@ -111,7 +114,7 @@ class _UserAccountState extends State<UserAccount> {
             color: grey,
           ),
           Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 10.w),
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
             child: SizedBox(
               height: 60.h,
               child: Row(
@@ -143,7 +146,7 @@ class _UserAccountState extends State<UserAccount> {
 
           Container(
             height: 60.h,
-            color: Color.fromRGBO(237, 240, 243, 1),
+            color: const Color.fromRGBO(237, 240, 243, 1),
           ),
           Divider(
             height: 1.h,
@@ -154,18 +157,18 @@ class _UserAccountState extends State<UserAccount> {
           Expanded(
             child: ListView.builder(
                 itemCount: iconList.length,
-                itemBuilder: (context, int) {
+                itemBuilder: (context, int count) {
                   return SizedBox(
                     height: 60.h,
                     child: Column(children: [
                       Padding(
-                        padding:  EdgeInsets.symmetric(horizontal: 10.w),
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             IconButton(
                               icon: Icon(
-                                iconList[int],
+                                iconList[count],
                                 size: 30.sp,
                               ),
                               onPressed: () async {
@@ -177,10 +180,10 @@ class _UserAccountState extends State<UserAccount> {
                               width: 10.w,
                             ),
                             Text(
-                              textList[int],
+                              textList[count],
                               style: TextStyle(fontSize: 25.sp),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Icon(
                               Icons.arrow_forward_ios,
                               size: 20.sp,

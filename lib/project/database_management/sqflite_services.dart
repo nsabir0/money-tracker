@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
@@ -15,10 +16,10 @@ abstract class DB {
     }
     try {
       var databasesPath = await getDatabasesPath();
-      String _path = p.join(databasesPath, 'money_crud.db');
-      _db = await openDatabase(_path, version: _version, onCreate: onCreate);
+      String path = p.join(databasesPath, 'money_crud.db');
+      _db = await openDatabase(path, version: _version, onCreate: onCreate);
     } catch (ex) {
-      print(ex);
+      log('$ex');
     }
   }
 
@@ -52,6 +53,5 @@ abstract class DB {
   static Future<int> delete(int id) async =>
       await _db!.delete('input', where: 'id = ?', whereArgs: [id]);
 
-  static Future<int> deleteAll () async =>
-      await _db!.delete('input');
+  static Future<int> deleteAll() async => await _db!.delete('input');
 }

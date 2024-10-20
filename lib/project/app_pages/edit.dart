@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:money_assistant_2608/project/classes/app_bar.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/classes/input_model.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
+import '../classes/app_bar.dart';
+import '../classes/constants.dart';
+import '../classes/input_model.dart';
+import '../localization/methods.dart';
 import 'input.dart';
 
 class Edit extends StatelessWidget {
@@ -11,6 +10,7 @@ class Edit extends StatelessWidget {
   final InputModel? inputModel;
   final IconData categoryIcon;
   const Edit({
+    super.key,
     this.inputModel,
     required this.categoryIcon,
   });
@@ -20,18 +20,19 @@ class Edit extends StatelessWidget {
       backgroundColor: blue1,
       appBar: BasicAppBar(getTranslated(context, 'Edit')!),
       body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-        child: PanelForKeyboard(AddEditInput(
-          formKey: _formKey3,
-          inputModel: this.inputModel,
-          categoryIcon: this.categoryIcon,
-        ),)
-      ),
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: PanelForKeyboard(
+            AddEditInput(
+              formKey: _formKey3,
+              inputModel: inputModel,
+              categoryIcon: categoryIcon,
+            ),
+          )),
     );
   }
 }

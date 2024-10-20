@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../localization/methods.dart';
 import 'input_model.dart';
 
 class ChartPie extends StatelessWidget {
-  const ChartPie(this.transactionsSorted);
+  const ChartPie(this.transactionsSorted, {super.key});
   final List<InputModel> transactionsSorted;
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class ChartPie extends StatelessWidget {
     String height;
     double animationDuration;
 
-    if (this.transactionsSorted[0].category == '') {
+    if (transactionsSorted[0].category == '') {
       haveRecords = false;
       width = '67%';
       height = '67%';
@@ -43,9 +42,10 @@ class ChartPie extends StatelessWidget {
             sortingOrder: SortingOrder.descending,
             sortFieldValueMapper: (InputModel data, _) => data.category,
             enableTooltip: haveRecords,
-            dataSource: this.transactionsSorted,
+            dataSource: transactionsSorted,
             pointColorMapper: (InputModel data, _) => data.color,
-            xValueMapper: (InputModel data, _) => getTranslated(context, data.category!) ?? data.category,
+            xValueMapper: (InputModel data, _) =>
+                getTranslated(context, data.category!) ?? data.category,
             yValueMapper: (InputModel data, _) => data.amount,
             dataLabelSettings: DataLabelSettings(
               showZeroValue: true,
@@ -62,25 +62,25 @@ class ChartPie extends StatelessWidget {
 
 class Annotations extends StatelessWidget {
   final bool haveRecords;
-  const Annotations(this.haveRecords);
+  const Annotations(this.haveRecords, {super.key});
   @override
   Widget build(BuildContext context) {
     return PhysicalModel(
+        shape: BoxShape.circle,
+        elevation: 10,
+        shadowColor: Colors.black,
+        color: const Color.fromRGBO(230, 230, 230, 1),
         child: Container(
           child: haveRecords == false
               ? Center(
                   child: Text(getTranslated(context, 'There is no data')!,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 0.5),
+                          color: const Color.fromRGBO(0, 0, 0, 0.5),
                           fontSize: 23.5.sp,
                           fontStyle: FontStyle.italic)),
                 )
               : null,
-        ),
-        shape: BoxShape.circle,
-        elevation: 10,
-        shadowColor: Colors.black,
-        color: const Color.fromRGBO(230, 230, 230, 1));
+        ));
   }
 }

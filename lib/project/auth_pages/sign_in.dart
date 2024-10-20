@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,31 +7,38 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../home.dart';
 
 class SignIn extends StatelessWidget {
-  Future<String?>? _authenticateUsers(LoginData data) {
-    print('authenticate users');
-    return Future.delayed(Duration(seconds: 1)).then((_) => null);
+  const SignIn({super.key});
+
+  Future<String?> _authenticateLogin(LoginData data) {
+    log('authenticate login');
+    return Future.delayed(const Duration(seconds: 1)).then((_) => null);
   }
 
-  Future<String?>? _onRecoverPassword(String name) {
-    print('onRecoverPassword');
-    return Future.delayed(Duration(seconds: 1)).then((_) => null);
+  Future<String?> _authenticateSignup(SignupData data) {
+    log('authenticate signup');
+    return Future.delayed(const Duration(seconds: 1)).then((_) => null);
+  }
+
+  Future<String?> _onRecoverPassword(String name) {
+    log('onRecoverPassword');
+    return Future.delayed(const Duration(seconds: 1)).then((_) => null);
   }
 
   @override
   Widget build(BuildContext context) {
-    final inputBorder = BorderRadius.vertical(
+    const inputBorder = BorderRadius.vertical(
       bottom: Radius.circular(10.0),
       top: Radius.circular(20.0),
     );
     return FlutterLogin(
-      title: 'MMAS',
-      logo: 'Hi!',
-      onSignup: _authenticateUsers,
-      onLogin: _authenticateUsers,
+      title: 'Money Assistant',
+      logo: 'images/splash_screen.png',
+      onSignup: _authenticateSignup, // for signup
+      onLogin: _authenticateLogin, // for login
       onRecoverPassword: _onRecoverPassword,
       onSubmitAnimationCompleted: () {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home()));
+            context, MaterialPageRoute(builder: (context) => const Home()));
       },
       messages: LoginMessages(
         userHint: 'User',
@@ -50,9 +58,9 @@ class SignIn extends StatelessWidget {
           icon: FontAwesomeIcons.google,
           label: 'Google',
           callback: () async {
-            print('start google sign in');
-            await Future.delayed(Duration(seconds: 1));
-            print('stop google sign in');
+            log('start google sign in');
+            await Future.delayed(const Duration(seconds: 1));
+            log('stop google sign in');
             return null;
           },
         ),
@@ -60,56 +68,56 @@ class SignIn extends StatelessWidget {
           icon: FontAwesomeIcons.facebookF,
           label: 'Facebook',
           callback: () async {
-            print('start facebook sign in');
-            await Future.delayed(Duration(seconds: 1));
-            print('stop facebook sign in');
+            log('start facebook sign in');
+            await Future.delayed(const Duration(seconds: 1));
+            log('stop facebook sign in');
             return null;
           },
         ),
-        LoginProvider(
-          icon: FontAwesomeIcons.linkedinIn,
-          callback: () async {
-            print('start linkdin sign in');
-            await Future.delayed(Duration(seconds: 1));
-            print('stop linkdin sign in');
-            return null;
-          },
-        ),
-        LoginProvider(
-          icon: FontAwesomeIcons.githubAlt,
-          callback: () async {
-            print('start github sign in');
-            await Future.delayed(Duration(seconds: 1));
-            print('stop github sign in');
-            return null;
-          },
-        ),
+        // LoginProvider(
+        //   icon: FontAwesomeIcons.linkedinIn,
+        //   callback: () async {
+        //     log('start linkdin sign in');
+        //     await Future.delayed(const Duration(seconds: 1));
+        //     log('stop linkdin sign in');
+        //     return null;
+        //   },
+        // ),
+        // LoginProvider(
+        //   icon: FontAwesomeIcons.githubAlt,
+        //   callback: () async {
+        //     log('start github sign in');
+        //     await Future.delayed(const Duration(seconds: 1));
+        //     log('stop github sign in');
+        //     return null;
+        //   },
+        // ),
       ],
       theme: LoginTheme(
         primaryColor: Colors.teal,
         accentColor: Colors.yellow,
         errorColor: Colors.deepOrange,
-        titleStyle: TextStyle(
-          color: Colors.greenAccent,
+        titleStyle: const TextStyle(
+          color: Colors.white,
           fontFamily: 'Quicksand',
-          letterSpacing: 4,
+          letterSpacing: 0,
         ),
-        bodyStyle: TextStyle(
+        bodyStyle: const TextStyle(
           fontStyle: FontStyle.italic,
           decoration: TextDecoration.underline,
         ),
-        textFieldStyle: TextStyle(
+        textFieldStyle: const TextStyle(
           color: Colors.orange,
           shadows: [Shadow(color: Colors.yellow, blurRadius: 2)],
         ),
-        buttonStyle: TextStyle(
+        buttonStyle: const TextStyle(
           fontWeight: FontWeight.w800,
           color: Colors.yellow,
         ),
         cardTheme: CardTheme(
           color: Colors.yellow.shade100,
           elevation: 5,
-          margin: EdgeInsets.only(top: 15),
+          margin: const EdgeInsets.only(top: 15),
           shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(100.0)),
         ),
@@ -117,11 +125,11 @@ class SignIn extends StatelessWidget {
           filled: true,
           fillColor: Colors.purple.withOpacity(.1),
           contentPadding: EdgeInsets.zero,
-          errorStyle: TextStyle(
+          errorStyle: const TextStyle(
             backgroundColor: Colors.orange,
             color: Colors.white,
           ),
-          labelStyle: TextStyle(fontSize: 12),
+          labelStyle: const TextStyle(fontSize: 12),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.blue.shade700, width: 4),
             borderRadius: inputBorder,
@@ -138,7 +146,7 @@ class SignIn extends StatelessWidget {
             borderSide: BorderSide(color: Colors.red.shade400, width: 8),
             borderRadius: inputBorder,
           ),
-          disabledBorder: UnderlineInputBorder(
+          disabledBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.grey, width: 5),
             borderRadius: inputBorder,
           ),

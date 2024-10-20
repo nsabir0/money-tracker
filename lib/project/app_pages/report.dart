@@ -1,25 +1,23 @@
-/// Package import
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:money_assistant_2608/project/classes/alert_dialog.dart';
-import 'package:money_assistant_2608/project/classes/app_bar.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/classes/custom_toast.dart';
-import 'package:money_assistant_2608/project/classes/input_model.dart';
-import 'package:money_assistant_2608/project/classes/dropdown_box.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/database_management/sqflite_services.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
-import 'package:money_assistant_2608/project/provider.dart';
 import 'package:provider/provider.dart';
-import 'dart:io' show Platform;
-
-/// Chart import
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../classes/alert_dialog.dart';
+import '../classes/app_bar.dart';
+import '../classes/constants.dart';
+import '../classes/custom_toast.dart';
+import '../classes/dropdown_box.dart';
+import '../classes/input_model.dart';
+import '../database_management/shared_preferences_services.dart';
+import '../database_management/sqflite_services.dart';
+import '../localization/methods.dart';
+import '../provider.dart';
 import 'edit.dart';
 
 var year = todayDT.year;
@@ -30,6 +28,7 @@ class Report extends StatefulWidget {
   final String selectedDate;
   final IconData icon;
   const Report({
+    super.key,
     required this.type,
     required this.category,
     required this.selectedDate,
@@ -37,10 +36,10 @@ class Report extends StatefulWidget {
   });
 
   @override
-  _ReportState createState() => _ReportState();
+  ReportState createState() => ReportState();
 }
 
-class _ReportState extends State<Report> {
+class ReportState extends State<Report> {
   @override
   Widget build(BuildContext context) {
     Color color = widget.type == getTranslated(context, 'Income') ? green : red;
@@ -62,7 +61,7 @@ class _ReportState extends State<Report> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(right: 15.w),
-                  child: Icon(this.widget.icon, size: 30.sp, color: color),
+                  child: Icon(widget.icon, size: 30.sp, color: color),
                 ),
                 Flexible(
                   child: Text(
@@ -93,27 +92,28 @@ class ReportBody extends StatefulWidget {
   final String selectedDate;
   final Color color;
   final IconData icon;
-  ReportBody(
-      this.type, this.category, this.selectedDate, this.color, this.icon);
+  const ReportBody(
+      this.type, this.category, this.selectedDate, this.color, this.icon,
+      {super.key});
   @override
-  _ReportBodyState createState() => _ReportBodyState();
+  ReportBodyState createState() => ReportBodyState();
 }
 
-class _ReportBodyState extends State<ReportBody> {
+class ReportBodyState extends State<ReportBody> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (context) => InputModelList(),
         builder: (context, child) {
           return FutureBuilder<List<InputModel>>(
-              initialData: [],
+              initialData: const [],
               future: Provider.of<InputModelList>(context).inputModelList,
               builder: (BuildContext context,
                   AsyncSnapshot<List<InputModel>> snapshot) {
                 connectionUI(snapshot);
                 if (snapshot.data == null ||
                     snapshot.connectionState == ConnectionState.waiting) {
-                  return SizedBox();
+                  return const SizedBox();
                 } else {
                   double yearAmount = 0;
                   DateTime date(int duration) =>
@@ -148,7 +148,7 @@ class _ReportBodyState extends State<ReportBody> {
                                 DateFormat('dd/MM/yyyy').parse(data.date!);
 
                             if (dateSelectedDT.isAfter(startOfThisYear
-                                    .subtract(Duration(days: 1))) &&
+                                    .subtract(const Duration(days: 1))) &&
                                 dateSelectedDT
                                     .isBefore(DateTime(todayDT.year, 12, 31))) {
                               return inputModel(data);
@@ -158,7 +158,7 @@ class _ReportBodyState extends State<ReportBody> {
                           .toList())
                       .cast<InputModel>();
 
-                  if (transactionsYearly.length > 0) {
+                  if (transactionsYearly.isNotEmpty) {
                     for (InputModel? transaction in transactionsYearly) {
                       yearAmount = yearAmount + transaction!.amount!;
                     }
@@ -187,7 +187,8 @@ class _ReportBodyState extends State<ReportBody> {
                           : [
                               monthBasedTransaction(
                                   'Jan',
-                                  startOfThisYear.subtract(Duration(days: 1)),
+                                  startOfThisYear
+                                      .subtract(const Duration(days: 1)),
                                   30),
                               monthBasedTransaction('Feb', date(30), 58),
                               monthBasedTransaction('Mar', date(58), 89),
@@ -201,13 +202,15 @@ class _ReportBodyState extends State<ReportBody> {
                               monthBasedTransaction('Nov', date(302), 333),
                               monthBasedTransaction('Dec', date(333), 364),
                             ];
-
-                  double maximumMonthAmount =
-                      monthBasedTransactionList[0].amount;
-                  for (int i = 0; i < monthBasedTransactionList.length; i++) {
-                    if (monthBasedTransactionList[i].amount >
-                        maximumMonthAmount) {
-                      maximumMonthAmount = monthBasedTransactionList[i].amount;
+                  double maximumMonthAmount = 0.0;
+                  if (monthBasedTransactionList.isNotEmpty) {
+                    maximumMonthAmount = monthBasedTransactionList[0].amount;
+                    for (int i = 0; i < monthBasedTransactionList.length; i++) {
+                      if (monthBasedTransactionList[i].amount >
+                          maximumMonthAmount) {
+                        maximumMonthAmount =
+                            monthBasedTransactionList[i].amount;
+                      }
                     }
                   }
 
@@ -229,10 +232,10 @@ class _ReportBodyState extends State<ReportBody> {
                                 isVisible: true,
                                 labelRotation: -45,
                                 rangePadding: ChartRangePadding.none,
-                                majorGridLines: MajorGridLines(width: 0)),
+                                majorGridLines: const MajorGridLines(width: 0)),
                             // tooltipBehavior: _tooltipBehavior,
                             primaryYAxis: NumericAxis(
-                                majorGridLines: MajorGridLines(width: 0),
+                                majorGridLines: const MajorGridLines(width: 0),
                                 minimum: 0,
                                 maximum: maximumMonthAmount,
                                 labelFormat: '{value}',
@@ -241,9 +244,9 @@ class _ReportBodyState extends State<ReportBody> {
                                 ),
                                 majorTickLines: MajorTickLines(size: 5.sp)),
                             series: _getGradientAreaSeries(
-                                this.widget.type, monthBasedTransactionList),
+                                widget.type, monthBasedTransactionList),
                             onMarkerRender: (MarkerRenderArgs args) {
-                              if (this.widget.type == 'Income') {
+                              if (widget.type == 'Income') {
                                 if (args.pointIndex == 0) {
                                   args.color =
                                       const Color.fromRGBO(9, 110, 16, 1);
@@ -341,7 +344,7 @@ class _ReportBodyState extends State<ReportBody> {
                                     filterData(context, transactions,
                                         selectedAnalysisDate);
                                 double totalAmount = 0;
-                                if (selectedTransactions.length > 0) {
+                                if (selectedTransactions.isNotEmpty) {
                                   for (InputModel? transaction
                                       in selectedTransactions) {
                                     totalAmount =
@@ -369,7 +372,7 @@ class _ReportBodyState extends State<ReportBody> {
                                           children: [
                                             DropDownBox(
                                                 false, selectedAnalysisDate),
-                                            Spacer(),
+                                            const Spacer(),
                                             Text(
                                               '${format(totalAmount.toDouble())} $currency',
                                               style: GoogleFonts.aBeeZee(
@@ -404,7 +407,7 @@ class _ReportBodyState extends State<ReportBody> {
                                             shrinkWrap: true,
                                             itemCount:
                                                 selectedTransactions.length,
-                                            itemBuilder: (context, int) {
+                                            itemBuilder: (context, int count) {
                                               return GestureDetector(
                                                 behavior:
                                                     HitTestBehavior.translucent,
@@ -416,7 +419,7 @@ class _ReportBodyState extends State<ReportBody> {
                                                               Edit(
                                                                 inputModel:
                                                                     selectedTransactions[
-                                                                        int],
+                                                                        count],
                                                                 categoryIcon:
                                                                     widget.icon,
                                                               ))).then(
@@ -431,13 +434,15 @@ class _ReportBodyState extends State<ReportBody> {
                                                       Colors.transparent,
                                                   key: ObjectKey(
                                                       selectedTransactions[
-                                                          int]),
+                                                          count]),
                                                   // performsFirstActionWithFullSwipe:
                                                   //     true,
-                                                  trailingActions: <
-                                                      SwipeAction>[
+                                                  trailingActions: <SwipeAction>[
                                                     SwipeAction(
-                                                        title: getTranslated(context, 'Delete') ?? 'Delete',
+                                                        title: getTranslated(
+                                                                context,
+                                                                'Delete') ??
+                                                            'Delete',
                                                         onTap:
                                                             (CompletionHandler
                                                                 handler) async {
@@ -449,7 +454,7 @@ class _ReportBodyState extends State<ReportBody> {
                                                                   () async {
                                                                   DB.delete(
                                                                       selectedTransactions[
-                                                                              int]
+                                                                              count]
                                                                           .id!);
                                                                   await handler(
                                                                       true);
@@ -469,7 +474,7 @@ class _ReportBodyState extends State<ReportBody> {
                                                                   () async {
                                                                   DB.delete(
                                                                       selectedTransactions[
-                                                                              int]
+                                                                              count]
                                                                           .id!);
                                                                   await handler(
                                                                       true);
@@ -485,13 +490,16 @@ class _ReportBodyState extends State<ReportBody> {
                                                         },
                                                         color: red),
                                                     SwipeAction(
-                                                        title: getTranslated(context, 'Add') ?? 'Add',
+                                                        title: getTranslated(
+                                                                context,
+                                                                'Add') ??
+                                                            'Add',
                                                         onTap:
                                                             (CompletionHandler
                                                                 handler) {
                                                           var model =
                                                               selectedTransactions[
-                                                                  int];
+                                                                  count];
                                                           model.id = null;
                                                           DB.insert(model);
                                                           Provider.of<InputModelList>(
@@ -501,7 +509,8 @@ class _ReportBodyState extends State<ReportBody> {
                                                           customToast(context,
                                                               'Transaction has been updated');
                                                         },
-                                                        color: Color.fromRGBO(
+                                                        color: const Color
+                                                            .fromRGBO(
                                                             255, 183, 121, 1)),
                                                   ],
                                                   child: Padding(
@@ -517,15 +526,15 @@ class _ReportBodyState extends State<ReportBody> {
                                                                 .format(DateFormat(
                                                                         'dd/MM/yyyy')
                                                                     .parse(selectedTransactions[
-                                                                            int]
+                                                                            count]
                                                                         .date!)),
                                                             style: GoogleFonts
                                                                 .aBeeZee(
                                                                     fontSize:
                                                                         17.sp)),
-                                                        Spacer(),
+                                                        const Spacer(),
                                                         Text(
-                                                            '${format(selectedTransactions[int].amount!)} $currency',
+                                                            '${format(selectedTransactions[count].amount!)} $currency',
                                                             style: GoogleFonts
                                                                 .aBeeZee(
                                                                     fontSize:
@@ -558,7 +567,7 @@ class _ReportBodyState extends State<ReportBody> {
 }
 
 /// Returns the list of spline area series with horizontal gradient.
-List<ChartSeries<MonthAmount, String>> _getGradientAreaSeries(
+List<CartesianSeries<dynamic, dynamic>> _getGradientAreaSeries(
     String type, List<MonthAmount> monthAmountList) {
   // final List<Color> color = <Color>[];
   // color.add(Colors.blue[200]!);
@@ -567,8 +576,7 @@ List<ChartSeries<MonthAmount, String>> _getGradientAreaSeries(
   // final List<double> stops = <double>[];
   // stops.add(0.2);
   // stops.add(0.7);
-
-  return <ChartSeries<MonthAmount, String>>[
+  return <CartesianSeries<dynamic, dynamic>>[
     SplineAreaSeries<MonthAmount, String>(
       /// To set the gradient colors for border here.
       borderGradient: type == 'Income'
@@ -610,8 +618,9 @@ List<ChartSeries<MonthAmount, String>> _getGradientAreaSeries(
         isVisible: true,
         height: 8.h,
         width: 8.h,
-        borderColor:
-            type == 'Income' ? Color.fromRGBO(161, 171, 35, 1) : Colors.white,
+        borderColor: type == 'Income'
+            ? const Color.fromRGBO(161, 171, 35, 1)
+            : Colors.white,
         borderWidth: 2.w,
       ),
       borderDrawMode: BorderDrawMode.all,

@@ -1,42 +1,44 @@
+import 'dart:io';
 import 'dart:collection';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:money_assistant_2608/project/classes/alert_dialog.dart';
-import 'package:money_assistant_2608/project/classes/app_bar.dart';
-import 'package:money_assistant_2608/project/classes/category_item.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/classes/custom_toast.dart';
-import 'package:money_assistant_2608/project/classes/input_model.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/database_management/sqflite_services.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'dart:io' show Platform;
 
+import '../classes/alert_dialog.dart';
+import '../classes/app_bar.dart';
+import '../classes/category_item.dart';
+import '../classes/constants.dart';
+import '../classes/custom_toast.dart';
 import '../classes/input_model.dart';
+import '../database_management/shared_preferences_services.dart';
+import '../database_management/sqflite_services.dart';
+import '../localization/methods.dart';
 import 'edit.dart';
 
 class Calendar extends StatelessWidget {
+  const Calendar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: blue1,
         appBar: BasicAppBar(getTranslated(context, 'Calendar')!),
-        body: CalendarBody());
+        body: const CalendarBody());
   }
 }
 
 class CalendarBody extends StatefulWidget {
+  const CalendarBody({super.key});
+
   @override
-  _CalendarBodyState createState() => _CalendarBodyState();
+  CalendarBodyState createState() => CalendarBodyState();
 }
 
-class _CalendarBodyState extends State<CalendarBody> {
+class CalendarBodyState extends State<CalendarBody> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
@@ -86,33 +88,33 @@ class _CalendarBodyState extends State<CalendarBody> {
     return ListView.builder(
         shrinkWrap: true,
         itemCount: itemList.length,
-        itemBuilder: (context, int) {
+        itemBuilder: (context, int index) {
           colorCategory =
-              transactions[int].type == 'Income' ? Colors.lightGreen : red;
+              transactions[index].type == 'Income' ? Colors.lightGreen : red;
           return GestureDetector(
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Edit(
-                              inputModel: transactions[int],
-                              categoryIcon: iconData(itemList[int]),
+                              inputModel: transactions[index],
+                              categoryIcon: iconData(itemList[index]),
                             ))).then((value) => setState(() {}));
               },
               child: SwipeActionCell(
-                key: ObjectKey(transactions[int]),
+                key: ObjectKey(transactions[index]),
                 // performsFirstActionWithFullSwipe: true,
                 trailingActions: <SwipeAction>[
                   SwipeAction(
                       title: getTranslated(context, 'Delete') ?? 'Delete',
                       //setState makes handler experience lagging
-                      onTap: (CompletionHandler handler)  {
+                      onTap: (CompletionHandler handler) {
                         Platform.isIOS
                             ? iosDialog(
                                 context,
                                 'Are you sure you want to delete this transaction?',
                                 'Delete', () {
-                                DB.delete(transactions[int].id!);
+                                DB.delete(transactions[index].id!);
                                 setState(() {});
                                 customToast(
                                     context, 'Transaction has been deleted');
@@ -121,7 +123,7 @@ class _CalendarBodyState extends State<CalendarBody> {
                                 context,
                                 'Are you sure you want to delete this transaction?',
                                 'Delete', () {
-                                DB.delete(transactions[int].id!);
+                                DB.delete(transactions[index].id!);
                                 setState(() {});
                                 customToast(
                                     context, 'Transaction has been deleted');
@@ -131,13 +133,13 @@ class _CalendarBodyState extends State<CalendarBody> {
                   SwipeAction(
                       title: getTranslated(context, 'Add') ?? 'Add',
                       onTap: (CompletionHandler handler) {
-                        var model = transactions[int];
+                        var model = transactions[index];
                         model.id = null;
                         DB.insert(model);
                         setState(() {});
                         customToast(context, 'Transaction has been updated');
                       },
-                      color: Color.fromRGBO(255, 183, 121, 1)),
+                      color: const Color.fromRGBO(255, 183, 121, 1)),
                 ],
                 child: Column(
                   children: [
@@ -150,7 +152,7 @@ class _CalendarBodyState extends State<CalendarBody> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Icon(
-                              iconData(itemList[int]),
+                              iconData(itemList[index]),
                               color: colorCategory,
                             ),
                             SizedBox(
@@ -160,8 +162,8 @@ class _CalendarBodyState extends State<CalendarBody> {
                                     EdgeInsets.only(left: 15.w, right: 10.w),
                                 child: Text(
                                     getTranslated(
-                                            context, itemList[int].text) ??
-                                        itemList[int].text,
+                                            context, itemList[index].text) ??
+                                        itemList[index].text,
                                     style: TextStyle(
                                       fontSize: 18.sp,
                                     ),
@@ -169,7 +171,8 @@ class _CalendarBodyState extends State<CalendarBody> {
                               ),
                             ),
                             Expanded(
-                              child: Text('(${transactions[int].description})',
+                              child: Text(
+                                  '(${transactions[index].description})',
                                   style: TextStyle(
                                       fontSize: 14.sp,
                                       fontStyle: FontStyle.italic),
@@ -182,12 +185,10 @@ class _CalendarBodyState extends State<CalendarBody> {
                                 padding:
                                     EdgeInsets.only(right: 10.w, left: 7.w),
                                 child: Text(
-                                    format(transactions[int].amount!) +
-                                        ' ' +
-                                        currency,
+                                    '${format(transactions[index].amount!)} $currency',
                                     style: GoogleFonts.aBeeZee(
                                       fontSize:
-                                          format(transactions[int].amount!)
+                                          format(transactions[index].amount!)
                                                       .length >
                                                   15
                                               ? 16.sp
@@ -220,7 +221,7 @@ class _CalendarBodyState extends State<CalendarBody> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<InputModel>>(
-        initialData: [],
+        initialData: const [],
         future: DB.inputModelList(),
         builder: (context, snapshot) {
           connectionUI(snapshot);
@@ -264,7 +265,7 @@ class _CalendarBodyState extends State<CalendarBody> {
             _selectedEvents = ValueNotifier(transactionsForDay(_selectedDay));
           }
 
-          List<InputModel> _getEventsForRange(DateTime start, DateTime end) {
+          List<InputModel> getEventsForRange(DateTime start, DateTime end) {
             final days = daysInRange(start, end);
 
             return [
@@ -272,7 +273,7 @@ class _CalendarBodyState extends State<CalendarBody> {
             ];
           }
 
-          void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+          void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
             if (!isSameDay(_selectedDay, selectedDay)) {
               setState(() {
                 _selectedDay = selectedDay;
@@ -285,7 +286,7 @@ class _CalendarBodyState extends State<CalendarBody> {
             }
           }
 
-          void _onRangeSelected(
+          void onRangeSelected(
               DateTime? start, DateTime? end, DateTime focusedDay) {
             setState(() {
               _selectedDay = null;
@@ -294,7 +295,7 @@ class _CalendarBodyState extends State<CalendarBody> {
               _rangeEnd = end;
               _rangeSelectionMode = RangeSelectionMode.toggledOn;
               if (start != null && end != null) {
-                _selectedEvents = ValueNotifier(_getEventsForRange(start, end));
+                _selectedEvents = ValueNotifier(getEventsForRange(start, end));
               } else if (start != null) {
                 _selectedEvents = ValueNotifier(transactionsForDay(start));
               } else if (end != null) {
@@ -325,7 +326,7 @@ class _CalendarBodyState extends State<CalendarBody> {
               rangeSelectionMode: _rangeSelectionMode,
               eventLoader: transactionsForDay,
               startingDayOfWeek: StartingDayOfWeek.monday,
-              calendarStyle: CalendarStyle(
+              calendarStyle: const CalendarStyle(
                   // weekendTextStyle:
                   // TextStyle().copyWith(color: Colors.blue[800]),
                   ),
@@ -333,7 +334,7 @@ class _CalendarBodyState extends State<CalendarBody> {
               headerStyle: HeaderStyle(
                 formatButtonTextStyle: TextStyle(fontSize: 18.sp),
                 formatButtonDecoration: BoxDecoration(
-                    boxShadow: [BoxShadow()],
+                    boxShadow: const [BoxShadow()],
                     color: blue2,
                     borderRadius: BorderRadius.circular(25.r)),
               ),
@@ -343,12 +344,12 @@ class _CalendarBodyState extends State<CalendarBody> {
                     //see difference between margin and padding below: Margin: Out (for itself), padding: In (for its child)
                     // margin: EdgeInsets.all(4.0.w),
                     padding: EdgeInsets.only(top: 6.0.h, left: 6.0.w),
-                    color: Color.fromRGBO(255, 168, 68, 1),
+                    color: const Color.fromRGBO(255, 168, 68, 1),
                     width: 46.w,
                     height: 46.h,
                     child: Text(
                       '${date.day}',
-                      style: TextStyle().copyWith(fontSize: 17.0.sp),
+                      style: const TextStyle().copyWith(fontSize: 17.0.sp),
                     ),
                   );
                 },
@@ -360,7 +361,7 @@ class _CalendarBodyState extends State<CalendarBody> {
                     height: 46.h,
                     child: Text(
                       '${date.day}',
-                      style: TextStyle().copyWith(fontSize: 17.0.sp),
+                      style: const TextStyle().copyWith(fontSize: 17.0.sp),
                     ),
                   );
                 },
@@ -372,11 +373,12 @@ class _CalendarBodyState extends State<CalendarBody> {
                       child: _buildEventsMarker(date, events),
                     );
                   }
+                  return null;
                 },
               ),
 
-              onDaySelected: _onDaySelected,
-              onRangeSelected: _onRangeSelected,
+              onDaySelected: onDaySelected,
+              onRangeSelected: onRangeSelected,
               onFormatChanged: (format) {
                 if (_calendarFormat != format) {
                   setState(() {
@@ -410,7 +412,7 @@ Widget _buildEventsMarker(DateTime date, List events) {
   double width = events.length < 100 ? 18.w : 28.w;
   return AnimatedContainer(
     duration: const Duration(milliseconds: 300),
-    decoration: BoxDecoration(
+    decoration: const BoxDecoration(
       shape: BoxShape.rectangle,
       color: Color.fromRGBO(67, 125, 229, 1),
     ),
@@ -419,7 +421,7 @@ Widget _buildEventsMarker(DateTime date, List events) {
     child: Center(
       child: Text(
         '${events.length}',
-        style: TextStyle().copyWith(
+        style: const TextStyle().copyWith(
           color: white,
           fontSize: 13.0.sp,
         ),
@@ -430,12 +432,12 @@ Widget _buildEventsMarker(DateTime date, List events) {
 
 class Balance extends StatefulWidget {
   final List? events;
-  Balance(this.events);
+  const Balance(this.events, {super.key});
   @override
-  _BalanceState createState() => _BalanceState();
+  BalanceState createState() => BalanceState();
 }
 
-class _BalanceState extends State<Balance> {
+class BalanceState extends State<Balance> {
   @override
   Widget build(BuildContext context) {
     double income = 0, expense = 0, balance = 0;
@@ -462,7 +464,7 @@ class _BalanceState extends State<Balance> {
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.bold),
             ),
-            Text(format(amount.toDouble()) + ' ' + currency,
+            Text('${format(amount.toDouble())} $currency',
                 style: GoogleFonts.aBeeZee(
                     color: color,
                     fontSize: (format(amount.toDouble()).length > 19)
@@ -477,7 +479,7 @@ class _BalanceState extends State<Balance> {
         );
     return Container(
       color: Colors.white54,
-      height: 69.h,
+      height: 80.h,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
         child: Row(

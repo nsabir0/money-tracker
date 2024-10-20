@@ -1,82 +1,84 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
 
+import '../database_management/shared_preferences_services.dart';
 import 'category_item.dart';
 import 'input_model.dart';
 
-Color green = Color.fromRGBO(57, 157, 3, 1),
-    red = Color.fromRGBO(217, 89, 89, 1),
-    white = Color.fromRGBO(255, 255, 255, 1),
-    blue1 = Color.fromRGBO(210, 234, 251, 1),
-    blue2 = Color.fromRGBO(139, 205, 254, 1),
-    blue3 = Color.fromRGBO(89, 176, 222, 1),
+Color green = const Color.fromRGBO(57, 157, 3, 1),
+    red = const Color.fromRGBO(217, 89, 89, 1),
+    white = const Color.fromRGBO(255, 255, 255, 1),
+    blue1 = const Color.fromRGBO(210, 234, 251, 1),
+    blue2 = const Color.fromRGBO(139, 205, 254, 1),
+    blue3 = const Color.fromRGBO(89, 176, 222, 1),
     grey = Colors.grey;
 
 List<Color> chartPieColors = [
   //19
-  Color.fromRGBO(100, 202, 254, 1),
-  Color.fromRGBO(80, 157, 253, 1),
-  Color.fromRGBO(7, 156, 193, 1),
-  Color.fromRGBO(89, 129, 163, 1),
-  Color.fromRGBO(79, 94, 120, 1),
-  Color.fromRGBO(196, 199, 216, 1),
-  Color.fromRGBO(255, 206, 161, 1),
-  Color.fromRGBO(255, 183, 121, 1),
-  Color.fromRGBO(237, 156, 128, 1),
-  Color.fromRGBO(126, 180, 166, 1),
-  Color.fromRGBO(212, 216, 140, 1),
-  Color.fromRGBO(144, 192, 106, 1),
-  Color.fromRGBO(128, 186, 76, 1),
-  Color.fromRGBO(224, 217, 255, 1),
-  Color.fromRGBO(202, 164, 255, 1),
-  Color.fromRGBO(197, 156, 240, 1),
-  Color.fromRGBO(241, 197, 211, 1),
-  Color.fromRGBO(244, 151, 178, 1),
-  Color.fromRGBO(218, 145, 176, 1),
+  const Color.fromRGBO(100, 202, 254, 1),
+  const Color.fromRGBO(80, 157, 253, 1),
+  const Color.fromRGBO(7, 156, 193, 1),
+  const Color.fromRGBO(89, 129, 163, 1),
+  const Color.fromRGBO(79, 94, 120, 1),
+  const Color.fromRGBO(196, 199, 216, 1),
+  const Color.fromRGBO(255, 206, 161, 1),
+  const Color.fromRGBO(255, 183, 121, 1),
+  const Color.fromRGBO(237, 156, 128, 1),
+  const Color.fromRGBO(126, 180, 166, 1),
+  const Color.fromRGBO(212, 216, 140, 1),
+  const Color.fromRGBO(144, 192, 106, 1),
+  const Color.fromRGBO(128, 186, 76, 1),
+  const Color.fromRGBO(224, 217, 255, 1),
+  const Color.fromRGBO(202, 164, 255, 1),
+  const Color.fromRGBO(197, 156, 240, 1),
+  const Color.fromRGBO(241, 197, 211, 1),
+  const Color.fromRGBO(244, 151, 178, 1),
+  const Color.fromRGBO(218, 145, 176, 1),
   //20
-  Color.fromRGBO(141, 190, 255, 1),
-  Color.fromRGBO(160, 217, 254, 1),
-  Color.fromRGBO(117, 216, 228, 1),
-  Color.fromRGBO(120, 217, 192, 1),
-  Color.fromRGBO(172, 198, 152, 1),
-  Color.fromRGBO(162, 193, 115, 1),
-  Color.fromRGBO(112, 164, 112, 1),
-  Color.fromRGBO(65, 174, 223, 1),
-  Color.fromRGBO(71, 131, 192, 1),
-  Color.fromRGBO(32, 225, 188, 1),
-  Color.fromRGBO(53, 136, 143, 1),
-  Color.fromRGBO(139, 178, 193, 1),
-  Color.fromRGBO(125, 150, 191, 1),
-  Color.fromRGBO(119, 131, 148, 1),
-  Color.fromRGBO(243, 210, 122, 1),
-  Color.fromRGBO(254, 203, 94, 1),
-  Color.fromRGBO(244, 186, 106, 1),
-  Color.fromRGBO(217, 165, 105, 1),
-  Color.fromRGBO(214, 142, 96, 1),
-  Color.fromRGBO(190, 119, 112, 1),
-  Color.fromRGBO(194, 94, 78, 1),
-  Color.fromRGBO(192, 72, 42, 1),
-  Color.fromRGBO(176, 29, 51, 1),
+  const Color.fromRGBO(141, 190, 255, 1),
+  const Color.fromRGBO(160, 217, 254, 1),
+  const Color.fromRGBO(117, 216, 228, 1),
+  const Color.fromRGBO(120, 217, 192, 1),
+  const Color.fromRGBO(172, 198, 152, 1),
+  const Color.fromRGBO(162, 193, 115, 1),
+  const Color.fromRGBO(112, 164, 112, 1),
+  const Color.fromRGBO(65, 174, 223, 1),
+  const Color.fromRGBO(71, 131, 192, 1),
+  const Color.fromRGBO(32, 225, 188, 1),
+  const Color.fromRGBO(53, 136, 143, 1),
+  const Color.fromRGBO(139, 178, 193, 1),
+  const Color.fromRGBO(125, 150, 191, 1),
+  const Color.fromRGBO(119, 131, 148, 1),
+  const Color.fromRGBO(243, 210, 122, 1),
+  const Color.fromRGBO(254, 203, 94, 1),
+  const Color.fromRGBO(244, 186, 106, 1),
+  const Color.fromRGBO(217, 165, 105, 1),
+  const Color.fromRGBO(214, 142, 96, 1),
+  const Color.fromRGBO(190, 119, 112, 1),
+  const Color.fromRGBO(194, 94, 78, 1),
+  const Color.fromRGBO(192, 72, 42, 1),
+  const Color.fromRGBO(176, 29, 51, 1),
 //18
-  Color.fromRGBO(198, 180, 251, 1),
-  Color.fromRGBO(155, 128, 217, 1),
-  Color.fromRGBO(112, 130, 212, 1),
-  Color.fromRGBO(78, 123, 216, 1),
-  Color.fromRGBO(139, 205, 254, 1),
-  Color.fromRGBO(89, 176, 222, 1),
-  Color.fromRGBO(81, 155, 194, 1),
-  Color.fromRGBO(4, 135, 192, 1),
-  Color.fromRGBO(50, 128, 171, 1),
-  Color.fromRGBO(44, 110, 119, 1),
-  Color.fromRGBO(41, 147, 134, 1),
-  Color.fromRGBO(95, 155, 71, 1),
-  Color.fromRGBO(179, 217, 37, 1),
-  Color.fromRGBO(237, 178, 135, 1),
-  Color.fromRGBO(198, 157, 100, 1),
-  Color.fromRGBO(194, 140, 112, 1),
-  Color.fromRGBO(214, 138, 88, 1),
-  Color.fromRGBO(225, 123, 66, 1),
+  const Color.fromRGBO(198, 180, 251, 1),
+  const Color.fromRGBO(155, 128, 217, 1),
+  const Color.fromRGBO(112, 130, 212, 1),
+  const Color.fromRGBO(78, 123, 216, 1),
+  const Color.fromRGBO(139, 205, 254, 1),
+  const Color.fromRGBO(89, 176, 222, 1),
+  const Color.fromRGBO(81, 155, 194, 1),
+  const Color.fromRGBO(4, 135, 192, 1),
+  const Color.fromRGBO(50, 128, 171, 1),
+  const Color.fromRGBO(44, 110, 119, 1),
+  const Color.fromRGBO(41, 147, 134, 1),
+  const Color.fromRGBO(95, 155, 71, 1),
+  const Color.fromRGBO(179, 217, 37, 1),
+  const Color.fromRGBO(237, 178, 135, 1),
+  const Color.fromRGBO(198, 157, 100, 1),
+  const Color.fromRGBO(194, 140, 112, 1),
+  const Color.fromRGBO(214, 138, 88, 1),
+  const Color.fromRGBO(225, 123, 66, 1),
 ];
 
 String format(double number) =>
@@ -91,16 +93,17 @@ CategoryItem categoryItem(IconData icon, String name) =>
 
 Widget? connectionUI(AsyncSnapshot<List<InputModel>> snapshot) {
   if (snapshot.connectionState == ConnectionState.none) {
-    return Center(
+    return const Center(
       child: CircularProgressIndicator(),
     );
   }
   if (snapshot.hasError) {
-    print('${snapshot.error}');
-    return Center(
+    log('${snapshot.error}');
+    return const Center(
       child: CircularProgressIndicator(),
     );
   }
+  return null;
 }
 
 List<CategoryItem> createItemList({
@@ -110,9 +113,15 @@ List<CategoryItem> createItemList({
   forSelectIconPage,
 }) {
   List<CategoryItem> itemList = [], items = [], expenseItems = [];
-  sharedPrefs.getAllExpenseItemsLists().forEach((parentExpenseItem) =>
-      parentExpenseItem
-          .forEach((expenseItem) => expenseItems.add(expenseItem)));
+
+  // sharedPrefs.getAllExpenseItemsLists().forEach((parentExpenseItem) =>
+  //     parentExpenseItem
+  //         .forEach((expenseItem) => expenseItems.add(expenseItem)));
+  for (var parentExpenseItem in sharedPrefs.getAllExpenseItemsLists()) {
+    for (var expenseItem in parentExpenseItem) {
+      expenseItems.add(expenseItem);
+    }
+  }
 
   if (forAnalysisPage) {
     items = isIncomeType ? incomeItems : expenseItems;
@@ -177,38 +186,48 @@ List<InputModel> filterData(
   // filter data based on user's selected day
   return (data
           .map((data) {
-            DateTime dateSelectedDT =
-                DateFormat('dd/MM/yyyy').parse(data.date!);
+            DateTime dateSelectedDT;
+
+            try {
+              dateSelectedDT = DateFormat('dd/MM/yyyy')
+                  .parse(data.date ?? DateTime.now().toString());
+            } catch (e) {
+              // Handle parsing error: log, throw a custom error, or assign a default value
+              log('Error parsing date: ${data.date} - Error: $e');
+              dateSelectedDT = DateTime.now(); // or some default date
+            }
 
             if (selectedDate == 'Today') {
-              if (dateSelectedDT.isAfter(todayDT.subtract(Duration(days: 1))) &&
-                  dateSelectedDT.isBefore(todayDT.add(Duration(days: 1)))) {
+              if (dateSelectedDT
+                      .isAfter(todayDT.subtract(const Duration(days: 1))) &&
+                  dateSelectedDT
+                      .isBefore(todayDT.add(const Duration(days: 1)))) {
                 return inputModel(data);
               }
             } else if (selectedDate == 'This week') {
-              if (dateSelectedDT
-                      .isAfter(startOfThisWeek.subtract(Duration(days: 1))) &&
+              if (dateSelectedDT.isAfter(
+                      startOfThisWeek.subtract(const Duration(days: 1))) &&
                   dateSelectedDT
-                      .isBefore(startOfThisWeek.add(Duration(days: 7)))) {
+                      .isBefore(startOfThisWeek.add(const Duration(days: 7)))) {
                 return inputModel(data);
               }
             } else if (selectedDate == 'This month') {
-              if (dateSelectedDT
-                      .isAfter(startOfThisMonth.subtract(Duration(days: 1))) &&
+              if (dateSelectedDT.isAfter(
+                      startOfThisMonth.subtract(const Duration(days: 1))) &&
                   dateSelectedDT
                       .isBefore(DateTime(todayDT.year, todayDT.month + 1, 1))) {
                 return inputModel(data);
               }
             } else if (selectedDate == 'This quarter') {
               if (dateSelectedDT.isAfter(
-                      startOfThisQuarter.subtract(Duration(days: 1))) &&
+                      startOfThisQuarter.subtract(const Duration(days: 1))) &&
                   dateSelectedDT.isBefore(DateTime(startOfThisQuarter.year,
                       startOfThisQuarter.month + 3, 1))) {
                 return inputModel(data);
               }
             } else if (selectedDate == 'This year') {
-              if (dateSelectedDT
-                      .isAfter(startOfThisYear.subtract(Duration(days: 1))) &&
+              if (dateSelectedDT.isAfter(
+                      startOfThisYear.subtract(const Duration(days: 1))) &&
                   dateSelectedDT.isBefore(DateTime(todayDT.year + 1, 1, 1))) {
                 return inputModel(data);
               }
