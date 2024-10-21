@@ -65,14 +65,14 @@ class MyAppState extends State<MyApp> {
       return ScreenUtilInit(
         designSize: const Size(428.0, 926.0),
         builder: (_, child) => MaterialApp(
-          title: 'MMAS',
+          title: 'Money Assistant',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             textTheme: const TextTheme(
               displaySmall: TextStyle(
                 fontFamily: 'OpenSans',
                 fontSize: 45.0,
-                color: Colors.deepOrangeAccent,
+                color: Colors.black,
               ),
               labelLarge: TextStyle(
                 fontFamily: 'OpenSans',
@@ -80,7 +80,7 @@ class MyAppState extends State<MyApp> {
               titleMedium: TextStyle(fontFamily: 'NotoSans'),
               bodyMedium: TextStyle(fontFamily: 'NotoSans'),
             ),
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo)
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
                 .copyWith(secondary: Colors.orange),
             textSelectionTheme:
                 const TextSelectionThemeData(cursorColor: Colors.amberAccent),
