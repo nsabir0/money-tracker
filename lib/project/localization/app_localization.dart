@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,11 +14,15 @@ class AppLocalization {
   }
 
   Future<void> load() async {
-    String jsonStringValues = await rootBundle.loadString(
-        'lib/project/localization/lang/${locale.languageCode}.json');
-    Map<String, dynamic> mappedJson = json.decode(jsonStringValues);
-    _localizedMap =
-        mappedJson.map((key, value) => MapEntry(key, value.toString()));
+    try {
+      String jsonStringValues = await rootBundle.loadString(
+          'lib/project/localization/lang/${locale.languageCode}.json');
+      Map<String, dynamic> mappedJson = json.decode(jsonStringValues);
+      _localizedMap =
+          mappedJson.map((key, value) => MapEntry(key, value.toString()));
+    } catch (e) {
+      log('Error loading localization: $e'); // Debugging line
+    }
   }
 
   String? translate(String key) {
@@ -50,7 +55,8 @@ class _DemoLocalizationsDelegate
       'ru',
       'tr',
       'vi',
-      'zh'
+      'zh',
+      'bn' // Added Bangla (Bengali)
     ].contains(locale.languageCode);
   }
 

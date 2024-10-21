@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,6 +37,7 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   late Locale? _locale;
   setLocale(Locale locale) {
+    log('Locale changed to: ${locale.languageCode}'); // Debugging line
     setState(() {
       _locale = locale;
     });
@@ -118,6 +121,7 @@ class MyAppState extends State<MyApp> {
             Locale("tr", "TR"),
             Locale("vi", "VN"),
             Locale("zh", "CN"),
+            Locale("bn", "BD"), // Added Bangla (Bengali)
           ],
         ),
       );

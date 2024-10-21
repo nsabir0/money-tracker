@@ -35,5 +35,7 @@ class Language {
     const Language(
         12, "🇻🇳", "Tiếng Việt", "vi", 'VN', '₫', 'VND', 'Vietnamese Dong'),
     const Language(13, "🇨🇳", "中文", "zh", 'CN', '¥', 'CNY', 'Chinese Yuan'),
+    const Language(
+        14, "🇧🇩", "বাংলা", "bn", 'BD', '৳', 'BDT', 'Bangladeshi Taka'),
   ];
 }

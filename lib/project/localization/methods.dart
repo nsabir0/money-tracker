@@ -30,6 +30,8 @@ Locale locale(String languageCode) {
       return const Locale('vi', "VN");
     case 'zh':
       return const Locale('zh', "CN");
+    case 'bn':
+      return const Locale('bn', "BD"); // Added Bangla (Bengali)
     default:
       return const Locale('en', 'US');
   }
